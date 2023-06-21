@@ -1,0 +1,28 @@
+{
+  "$schema": "https://raw.githubusercontent.com/grafana/grafana/master/docs/sources/developers/plugins/plugin.schema.json",
+  "type": "datasource",
+  "name": "SurrealDB",
+  "id": "grafana-surrealdb-datasource",
+  "metrics": true,
+  "backend": true,
+  "executable": "gpx_surrealdb",
+  "info": {
+    "description": "SurrealDB datasource plugin for Grafana",
+    "author": {
+      "name": "Grafana Labs"
+    },
+    "keywords": ["datasource"],
+    "logos": {
+      "small": "img/logo.png",
+      "large": "img/logo.png"
+    },
+    "links": [],
+    "screenshots": [],
+    "version": "%VERSION%",
+    "updated": "%TODAY%"
+  },
+  "dependencies": {
+    "grafanaDependency": ">=9.5.3",
+    "plugins": []
+  }
+}
