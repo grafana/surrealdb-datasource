@@ -74,7 +74,12 @@ export function ConfigEditor(props: Props) {
   return (
     <div className="gf-form-group">
       <InlineField label="Endpoint" labelWidth={12}>
-        <Input onChange={onEndpointChange} value={jsonData.endpoint || ''} width={40} />
+        <Input
+          onChange={onEndpointChange}
+          value={jsonData.endpoint || ''}
+          placeholder="ws://localhost:8000/rpc"
+          width={40}
+        />
       </InlineField>
       <InlineField label="Username" labelWidth={12}>
         <Input onChange={onUsernameChange} value={jsonData.username || ''} placeholder="surrealdb" width={40} />

@@ -1,12 +1,12 @@
-import { DataQuery, DataSourceJsonData } from '@grafana/data';
+import { DataSourceJsonData } from '@grafana/data';
+import { DataQuery } from '@grafana/schema';
 
 export interface SurrealQuery extends DataQuery {
-  queryText?: string;
-  constant: number;
+  queryText: string;
 }
 
 export const DEFAULT_QUERY: Partial<SurrealQuery> = {
-  constant: 6.5,
+  queryText: 'SELECT * FROM surreal LIMIT 10',
 };
 
 /**
@@ -16,7 +16,7 @@ export interface SurrealDataSourceOptions extends DataSourceJsonData {
   endpoint?: string;
   username?: string;
   namespace?: string;
-  database?: string;  
+  database?: string;
 }
 
 /**
