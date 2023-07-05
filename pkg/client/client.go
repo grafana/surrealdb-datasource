@@ -12,7 +12,7 @@ type SurrealConfig struct {
 }
 
 // NewConnection creates a new connection to the SurrealDB database.
-func NewConnection(config SurrealConfig) (*surrealdb.DB, error) {
+func NewConnection(config *SurrealConfig) (*surrealdb.DB, error) {
 	db, err := surrealdb.New(config.Endpoint)
 
 	if err != nil {

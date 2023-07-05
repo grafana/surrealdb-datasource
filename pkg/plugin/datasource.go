@@ -34,7 +34,7 @@ func NewDatasource(dsiConfig backend.DataSourceInstanceSettings) (instancemgmt.I
 		return nil, fmt.Errorf("unable to get settings from JSON config: %w", err)
 	}
 
-	db, err := client.NewConnection(config)
+	db, err := client.NewConnection(&config)
 
 	if err != nil {
 		return nil, fmt.Errorf("unable to connect to database: %w", err)
