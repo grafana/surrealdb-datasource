@@ -2,7 +2,7 @@ version: '3.0'
 
 services:
   grafana:
-    container_name: 'grafanalabs-surrealdb-datasource'
+    container_name: grafanalabs-surrealdb-datasource
     build:
       context: ./.config
       args:
@@ -12,3 +12,12 @@ services:
     volumes:
       - ./dist:/var/lib/grafana/plugins/grafanalabs-surrealdb-datasource
       - ./provisioning:/etc/grafana/provisioning
+  surrealdb:
+    image: surrealdb/surrealdb:latest
+    container_name: surrealdb
+    restart: always
+    command: start --user grafana --pass password file:/data/database.db
+    ports:
+      - 8000:8000
+    volumes:
+      - ./tmp/data:/data

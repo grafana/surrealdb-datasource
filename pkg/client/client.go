@@ -1,7 +1,5 @@
 package client
 
-import "github.com/surrealdb/surrealdb.go"
-
 // SurrealConfig defines the configuration for the SurrealDB database.
 type SurrealConfig struct {
 	Database  string `json:"database,omitempty"`
@@ -11,26 +9,39 @@ type SurrealConfig struct {
 	Username  string `json:"username,omitempty"`
 }
 
-// NewConnection creates a new connection to the SurrealDB database.
-func NewConnection(config *SurrealConfig) (*surrealdb.DB, error) {
-	db, err := surrealdb.New(config.Endpoint)
+// SurrealDBClient defines the interface for the SurrealDB database.
+type SurrealDBClient interface {
+	Close()
+	Create(thing string, data interface{}) (interface{}, error)
+	Query(sql string, vars interface{}) (interface{}, error)
+	Signin(vars interface{}) (interface{}, error)
+	Use(namespace string, database string) (interface{}, error)
+}
 
-	if err != nil {
-		return nil, err
-	}
+// Client defines the client for the SurrealDB database.
+type Client struct {
+	db SurrealDBClient
+}
 
+// Use returns a new client for the SurrealDB database.
+func Use(db SurrealDBClient) *Client {
+	return &Client{db}
+}
+
+// Connect connects to the SurrealDB database.
+func (c *Client) Connect(config *SurrealConfig) (bool, error) {
 	credentials := map[string]interface{}{
 		"user": config.Username,
 		"pass": config.Password,
 	}
 
-	if _, err = db.Signin(credentials); err != nil {
-		return nil, err
+	if _, err := c.db.Signin(credentials); err != nil {
+		return false, err
 	}
 
-	if _, err = db.Use(config.Namespace, config.Database); err != nil {
-		return nil, err
+	if _, err := c.db.Use(config.Namespace, config.Database); err != nil {
+		return false, err
 	}
 
-	return db, nil
+	return true, nil
 }

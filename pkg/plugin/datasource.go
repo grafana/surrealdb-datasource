@@ -19,8 +19,16 @@ var (
 
 // SurrealDatasource defines how to connect to the datasource and describes the query model.
 type SurrealDatasource struct {
-	db     *surrealdb.DB
+	db     client.SurrealDBClient
 	config *client.SurrealConfig
+}
+
+// NewDatasourceInstance creates a new SurrealDatasource instance.
+func NewDatasourceInstance(db client.SurrealDBClient, config *client.SurrealConfig) *SurrealDatasource {
+	return &SurrealDatasource{
+		db:     db,
+		config: config,
+	}
 }
 
 // NewDatasource creates a new datasource instance.
@@ -34,16 +42,19 @@ func NewDatasource(dsiConfig backend.DataSourceInstanceSettings) (instancemgmt.I
 		return nil, fmt.Errorf("unable to get settings from JSON config: %w", err)
 	}
 
-	db, err := client.NewConnection(&config)
+	db, err := surrealdb.New(config.Endpoint)
+
+	if err != nil {
+		return nil, err
+	}
+
+	_, err = client.Use(db).Connect(&config)
 
 	if err != nil {
 		return nil, fmt.Errorf("unable to connect to database: %w", err)
 	}
 
-	return &SurrealDatasource{
-		db:     db,
-		config: &config,
-	}, nil
+	return NewDatasourceInstance(db, &config), nil
 }
 
 // Dispose here tells plugin SDK that plugin wants to clean up resources when a new instance
