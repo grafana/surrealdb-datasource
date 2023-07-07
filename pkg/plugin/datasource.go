@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"sync"
 
 	"github.com/grafana-labs/surrealdb-datasource/pkg/client"
 	"github.com/grafana/grafana-plugin-sdk-go/backend"
@@ -70,17 +71,26 @@ func (d *SurrealDatasource) Dispose() {
 // The QueryDataResponse contains a map of RefID to the response for each query, and each response
 // contains Frames ([]*Frame).
 func (d *SurrealDatasource) QueryData(ctx context.Context, req *backend.QueryDataRequest) (*backend.QueryDataResponse, error) {
-	// create response struct
 	response := backend.NewQueryDataResponse()
 
-	// loop over queries and execute them individually.
-	for _, q := range req.Queries {
-		res := d.createQuery(ctx, req.PluginContext, q)
+	var mutex sync.Mutex
+	var wg sync.WaitGroup
 
-		// save the response in a hashmap
-		// based on with RefID as identifier
-		response.Responses[q.RefID] = res
+	for _, query := range req.Queries {
+		wg.Add(1)
+
+		go func(ctx context.Context, pluginCtx backend.PluginContext, q backend.DataQuery) {
+			defer wg.Done()
+
+			res := d.createQuery(ctx, pluginCtx, q)
+
+			mutex.Lock()
+			response.Responses[q.RefID] = res
+			mutex.Unlock()
+		}(ctx, req.PluginContext, query)
 	}
+
+	wg.Wait()
 
 	return response, nil
 }
