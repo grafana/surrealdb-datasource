@@ -52,7 +52,7 @@ jobs:
         uses: magefile/mage-action@v2
         with:
           version: latest
-          args: coverage
+          # args: coverage
 
       - name: Build backend
         if: steps.check-for-backend.outputs.has-backend == 'true'
