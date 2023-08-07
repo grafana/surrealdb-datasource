@@ -3,7 +3,7 @@ module github.com/grafana-labs/surrealdb-datasource
 go 1.19
 
 require (
-	github.com/grafana/grafana-plugin-sdk-go v0.171.0
+	github.com/grafana/grafana-plugin-sdk-go v0.172.0
 	github.com/surrealdb/surrealdb.go v0.2.1
 )
 
@@ -16,7 +16,7 @@ require (
 	github.com/cheekybits/genny v1.0.0 // indirect
 	github.com/chromedp/cdproto v0.0.0-20220208224320-6efb837e6bc2 // indirect
 	github.com/cpuguy83/go-md2man/v2 v2.0.2 // indirect
-	github.com/elazarl/goproxy v0.0.0-20220115173737-adb46da277ac // indirect
+	github.com/elazarl/goproxy v0.0.0-20230731152917-f99041a5c027 // indirect
 	github.com/fatih/color v1.15.0 // indirect
 	github.com/getkin/kin-openapi v0.112.0 // indirect
 	github.com/go-logr/logr v1.2.3 // indirect
