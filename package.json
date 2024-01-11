@@ -61,7 +61,7 @@
     "@emotion/css": "^11.11.2",
     "@grafana/data": "9.5.3",
     "@grafana/runtime": "9.5.3",
-    "@grafana/ui": "9.5.3",
+    "@grafana/ui": "10.2.3",
     "react": "17.0.2",
     "react-dom": "17.0.2",
     "tslib": "2.6.2"
