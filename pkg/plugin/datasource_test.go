@@ -42,7 +42,7 @@ func TestNewDatasource_Success(t *testing.T) {
 		DecryptedSecureJSONData: map[string]string{"password": "password"},
 	}
 
-	instance, err := plugin.NewDatasource(config)
+	instance, err := plugin.NewDatasource(context.Background(), config)
 
 	if err != nil {
 		t.Errorf("unexpected error: %s", err)
@@ -58,7 +58,7 @@ func TestNewDatasource_InvalidJSON(t *testing.T) {
 		DecryptedSecureJSONData: map[string]string{"password": "password"},
 	}
 
-	_, err := plugin.NewDatasource(config)
+	_, err := plugin.NewDatasource(context.Background(), config)
 
 	if err == nil {
 		t.Error("expected error, got nil")
