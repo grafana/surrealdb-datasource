@@ -33,7 +33,7 @@ func NewDatasourceInstance(db client.SurrealDBClient, config *client.SurrealConf
 }
 
 // NewDatasource creates a new datasource instance.
-func NewDatasource(dsiConfig backend.DataSourceInstanceSettings) (instancemgmt.Instance, error) {
+func NewDatasource(ctx context.Context, dsiConfig backend.DataSourceInstanceSettings) (instancemgmt.Instance, error) {
 	var config client.SurrealConfig
 	err := json.Unmarshal(dsiConfig.JSONData, &config)
 
