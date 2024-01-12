@@ -31,7 +31,6 @@
     "@types/jest": "^29.5.0",
     "@types/lodash": "^4.14.194",
     "@types/node": "^20.8.7",
-    "@types/testing-library__jest-dom": "6.0.0",
     "copy-webpack-plugin": "^12.0.1",
     "css-loader": "^6.9.0",
     "eslint-plugin-deprecation": "^2.0.0",
