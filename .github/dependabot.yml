@@ -17,3 +17,10 @@ updates:
     directory: "/"
     schedule:
       interval: "daily"
+    groups:
+      dependencies:
+        patterns:
+          - "@grafana/*"
+      dev-dependencies:
+        patterns:
+          - "@grafana/e2e*"
