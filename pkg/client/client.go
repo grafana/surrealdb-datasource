@@ -6,6 +6,7 @@ type SurrealConfig struct {
 	Endpoint  string `json:"endpoint,omitempty"`
 	Namespace string `json:"namespace,omitempty"`
 	Password  string `json:"password,omitempty"`
+	Scope     string `json:"scope,omitempty"`
 	Username  string `json:"username,omitempty"`
 }
 
@@ -33,6 +34,10 @@ func (c *Client) Connect(config *SurrealConfig) (bool, error) {
 	credentials := map[string]interface{}{
 		"user": config.Username,
 		"pass": config.Password,
+	}
+
+	if config.Scope != "" {
+		credentials["scope"] = config.Scope
 	}
 
 	if _, err := c.db.Signin(credentials); err != nil {

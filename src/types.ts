@@ -13,10 +13,11 @@ export const DEFAULT_QUERY: Partial<SurrealQuery> = {
  * These are options configured for each DataSource instance
  */
 export interface SurrealDataSourceOptions extends DataSourceJsonData {
-  endpoint?: string;
-  username?: string;
-  namespace?: string;
   database?: string;
+  endpoint?: string;
+  namespace?: string;
+  scope?: string;
+  username?: string;
 }
 
 /**

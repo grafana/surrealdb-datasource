@@ -1,7 +1,8 @@
 import React, { ChangeEvent } from 'react';
-import { InlineField, Input, SecretInput } from '@grafana/ui';
+import { Divider, Field, Input, SecretInput } from '@grafana/ui';
+import { DataSourceDescription, ConfigSection } from '@grafana/experimental';
 import { DataSourcePluginOptionsEditorProps } from '@grafana/data';
-import { SurrealDataSourceOptions, SurrealSecureJsonData } from '../types';
+import type { SurrealDataSourceOptions, SurrealSecureJsonData } from '../types';
 
 interface Props extends DataSourcePluginOptionsEditorProps<SurrealDataSourceOptions> {}
 
@@ -44,6 +45,15 @@ export function ConfigEditor(props: Props) {
     onOptionsChange({ ...options, jsonData });
   };
 
+  const onScopeChange = (event: ChangeEvent<HTMLInputElement>) => {
+    const jsonData = {
+      ...options.jsonData,
+      scope: event.target.value,
+    };
+
+    onOptionsChange({ ...options, jsonData });
+  };
+
   // Secure field (only sent to the backend)
   const onPasswordChange = (event: ChangeEvent<HTMLInputElement>) => {
     onOptionsChange({
@@ -72,34 +82,119 @@ export function ConfigEditor(props: Props) {
   const secureJsonData: SurrealSecureJsonData = options.secureJsonData ?? {};
 
   return (
-    <div className="gf-form-group">
-      <InlineField label="Endpoint" labelWidth={12}>
-        <Input
-          onChange={onEndpointChange}
-          value={jsonData.endpoint || ''}
-          placeholder="ws://localhost:8000/rpc"
-          width={40}
-        />
-      </InlineField>
-      <InlineField label="Username" labelWidth={12}>
-        <Input onChange={onUsernameChange} value={jsonData.username || ''} placeholder="surrealdb" width={40} />
-      </InlineField>
-      <InlineField label="Password" labelWidth={12}>
-        <SecretInput
-          isConfigured={(secureJsonFields && secureJsonFields.password) as boolean}
-          value={secureJsonData.password || ''}
-          placeholder="secure json field (backend only)"
-          width={40}
-          onReset={onResetPassword}
-          onChange={onPasswordChange}
-        />
-      </InlineField>
-      <InlineField label="Namespace" labelWidth={12}>
-        <Input onChange={onNamespaceChange} value={jsonData.namespace || ''} placeholder="my-department" width={40} />
-      </InlineField>
-      <InlineField label="Database" labelWidth={12}>
-        <Input onChange={onDatabaseChange} value={jsonData.database || ''} placeholder="grafana-data" width={40} />
-      </InlineField>
-    </div>
+    <>
+      <DataSourceDescription
+        dataSourceName="SurrealDB"
+        docsLink="https://grafana.com/grafana/plugins/surrealdb-datasource/"
+        hasRequiredFields
+      />
+      <Divider />
+      <ConfigSection title="Server">
+        <Field
+          required
+          label={'Endpoint URL'}
+          description={'The address of the SurrealDB server to connect to.'}
+          invalid={!jsonData.endpoint}
+          error={'Endpoint URL is required'}
+        >
+          <Input
+            name="endpoint"
+            width={40}
+            value={jsonData.endpoint || ''}
+            onChange={onEndpointChange}
+            label={'Endpoint URL'}
+            aria-label={'Endpoint URL'}
+            placeholder={'ws://localhost:8000/rpc'}
+          />
+        </Field>
+        <Field
+          required
+          label={'Database name'}
+          description={'The name of the database to connect to.'}
+          invalid={!jsonData.database}
+          error={'Database name is required'}
+        >
+          <Input
+            name="port"
+            width={40}
+            value={jsonData.database || ''}
+            onChange={onDatabaseChange}
+            label={'Database name'}
+            aria-label={'Database name'}
+            placeholder={'Database name'}
+          />
+        </Field>
+        <Field
+          required
+          label={'Namespace'}
+          description={'The namespace to use for the connection.'}
+          invalid={!jsonData.namespace}
+          error={'Namespace is required'}
+        >
+          <Input
+            name="namespace"
+            width={40}
+            value={jsonData.namespace || ''}
+            onChange={onNamespaceChange}
+            label={'Namespace'}
+            aria-label={'Namespace'}
+            placeholder={'Namespace'}
+          />
+        </Field>
+      </ConfigSection>
+      <Divider />
+      <ConfigSection title="Authentication">
+        <Field
+          required
+          label={'Username'}
+          description={'The username to use for the connection.'}
+          invalid={!jsonData.username}
+          error={'Username is required'}
+        >
+          <Input
+            name="username"
+            width={40}
+            value={jsonData.username || ''}
+            onChange={onUsernameChange}
+            label={'Username'}
+            aria-label={'Username'}
+            placeholder={'Username'}
+          />
+        </Field>
+        <Field required label={'Password'} description={'The password to use for the connection.'}>
+          <SecretInput
+            name="pwd"
+            width={40}
+            label={'Password'}
+            aria-label={'Password'}
+            placeholder={'Password'}
+            value={secureJsonData.password || ''}
+            isConfigured={(secureJsonFields && secureJsonFields.password) as boolean}
+            onReset={onResetPassword}
+            onChange={onPasswordChange}
+          />
+        </Field>
+        <Field label={'Scope'} description={'The scope to use for the connection.'}>
+          <Input
+            name="scope"
+            width={40}
+            value={jsonData.scope || ''}
+            onChange={onScopeChange}
+            label={'Scope'}
+            aria-label={'Scope'}
+            placeholder={'Scope'}
+          />
+        </Field>
+      </ConfigSection>
+      <Divider />
+      <ConfigSection
+        title="Additional settings"
+        description="Additional settings are optional settings that can be configured for more control over your data source."
+        isCollapsible
+        isInitiallyOpen={true}
+      >
+        Not available in this version.
+      </ConfigSection>
+    </>
   );
 }

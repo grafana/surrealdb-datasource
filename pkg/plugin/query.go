@@ -40,8 +40,12 @@ func (d *SurrealDatasource) createQuery(_ context.Context, pCtx backend.PluginCo
 	var res []map[string]json.RawMessage
 	ok, err := surrealdb.UnmarshalRaw(r, &res)
 
-	if !ok {
+	if err != nil {
 		return backend.ErrDataResponse(backend.StatusBadRequest, fmt.Sprintf("unmarshal: %v", err.Error()))
+	}
+
+	if !ok {
+		return response
 	}
 
 	// convert the response to a data frame.
