@@ -1,24 +1,26 @@
-import React, { ChangeEvent } from 'react';
-import { InlineField, Input } from '@grafana/ui';
-import { QueryEditorProps } from '@grafana/data';
+import React from 'react';
+import { CodeEditor } from '@grafana/ui';
 import { DataSource } from '../datasource';
-import { SurrealDataSourceOptions, SurrealQuery } from '../types';
+import type { QueryEditorProps } from '@grafana/data';
+import type { SurrealDataSourceOptions, SurrealQuery } from '../types';
 
 type Props = QueryEditorProps<DataSource, SurrealQuery, SurrealDataSourceOptions>;
 
-export function QueryEditor({ query, onChange, onRunQuery }: Props) {
-  const onQueryTextChange = (event: ChangeEvent<HTMLInputElement>) => {
-    onChange({ ...query, queryText: event.target.value });
-    onRunQuery();
-  };
+export function QueryEditor({ query, onChange }: Props) {
+  const onQueryTextChange = (queryText: string) => onChange({ ...query, queryText });
 
   const { queryText } = query;
 
   return (
-    <div className="gf-form">
-      <InlineField label="Query Text" labelWidth={16} tooltip="Not used yet">
-        <Input onChange={onQueryTextChange} value={queryText || ''} />
-      </InlineField>
-    </div>
+    <>
+      <CodeEditor
+        language="sql"
+        value={queryText}
+        onBlur={onQueryTextChange}
+        showMiniMap={false}
+        showLineNumbers={true}
+        height="240px"
+      />
+    </>
   );
 }
