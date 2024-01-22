@@ -6,9 +6,7 @@ import type { SurrealDataSourceOptions, SurrealSecureJsonData } from '../types';
 
 interface Props extends DataSourcePluginOptionsEditorProps<SurrealDataSourceOptions> {}
 
-export function ConfigEditor(props: Props) {
-  const { onOptionsChange, options } = props;
-
+export function ConfigEditor({ onOptionsChange, options }: Props) {
   const onEndpointChange = (event: ChangeEvent<HTMLInputElement>) => {
     const jsonData = {
       ...options.jsonData,
