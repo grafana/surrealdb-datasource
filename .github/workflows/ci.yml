@@ -15,23 +15,27 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+
       - name: Setup Node.js environment
         uses: actions/setup-node@v4
         with:
           node-version: '20'
-          cache: 'npm'
+          cache: 'yarn'
 
       - name: Install dependencies
-        run: npm ci
+        run: yarn install --frozen-lockfile
 
       - name: Check types
-        run: npm run typecheck
+        run: yarn typecheck
+
       - name: Lint
-        run: npm run lint
+        run: yarn lint
+
       - name: Unit tests
-        run: npm run test:ci
+        run: yarn test:ci
+
       - name: Build frontend
-        run: npm run build
+        run: yarn build
 
       - name: Check for backend
         id: check-for-backend
@@ -75,7 +79,7 @@ jobs:
 
       # - name: Run e2e tests
       #   if: steps.check-for-e2e.outputs.has-e2e == 'true'
-      #   run: npm run e2e
+      #   run: yarn e2e
 
       # - name: Stop grafana docker
       #   if: steps.check-for-e2e.outputs.has-e2e == 'true'
