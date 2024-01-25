@@ -40,7 +40,7 @@ Please refer to our [Data Source Management documentation](https://grafana.com/d
 
 ### Querying
 
-The query editor allows you to write SurrealQL queries. For more information about writing SurrealQL queries, please refer to [SurrealDB's doumentation](https://docs.surrealdb.com/docs/surrealql/overview).
+The query editor allows you to write SurrealQL queries. For more information about writing SurrealQL queries, please refer to [SurrealDB's documentation](https://docs.surrealdb.com/docs/surrealql/overview).
 
 In this version, only a SurrealQL Editor is provided to write queries with. A Query Builder UI is planned for a later version of the plugin.
 

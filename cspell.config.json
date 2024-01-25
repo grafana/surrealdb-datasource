@@ -1,0 +1,35 @@
+{
+  "ignorePaths": [
+    ".config/**",
+    ".github/**",
+    ".vscode/**",
+    "coverage/**",
+    "cspell.config.json",
+    "cypress/**",
+    "dist/**",
+    "docker-compose.yaml",
+    "go.sum",
+    "mage_output_file.go",
+    "node_modules/**",
+    "package.json",
+    "pkg/**/*_test.go",
+    "pkg/**/*.html",
+    "pkg/**/*.json",
+    "pkg/**/*.jsonc",
+    "pkg/testdata/**",
+    "provisioning/**",
+    "src/dashboards/**",
+    "yarn.lock"
+  ],
+  "words": [
+    "adamyeats",
+    "datasource",
+    "Datasource",
+    "grafanalabs",
+    "instancemgmt",
+    "jackspeak",
+    "surrealdb",
+    "typecheck",
+    "vals"
+  ]
+}
