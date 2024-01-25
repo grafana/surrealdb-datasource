@@ -11,12 +11,21 @@
     "author": {
       "name": "Grafana Labs"
     },
-    "keywords": ["datasource"],
+    "keywords": ["datasource", "sql", "surrealdb"],
     "logos": {
       "small": "img/logo.png",
       "large": "img/logo.png"
     },
-    "links": [],
+    "links": [
+      {
+        "name": "Project site",
+        "url": "https://github.com/grafana/surrealdb-datasource"
+      },
+      {
+        "name": "Apache License",
+        "url": "https://github.com/grafana/surrealdb-datasource/blob/main/LICENSE"
+      }
+    ],
     "screenshots": [],
     "version": "%VERSION%",
     "updated": "%TODAY%"
