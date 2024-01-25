@@ -30,27 +30,28 @@ var config = client.SurrealConfig{
 	Username:  "grafana",
 }
 
-func TestNewDatasource_Success(t *testing.T) {
-	msg, err := json.Marshal(config)
+// @TODO: Move this test to an integration test suite.
+// func TestNewDatasource_Success(t *testing.T) {
+// 	msg, err := json.Marshal(config)
 
-	if err != nil {
-		t.Errorf("unexpected error: %s", err)
-	}
+// 	if err != nil {
+// 		t.Errorf("unexpected error: %s", err)
+// 	}
 
-	config := backend.DataSourceInstanceSettings{
-		JSONData:                msg,
-		DecryptedSecureJSONData: map[string]string{"password": "password"},
-	}
+// 	config := backend.DataSourceInstanceSettings{
+// 		JSONData:                msg,
+// 		DecryptedSecureJSONData: map[string]string{"password": "password"},
+// 	}
 
-	instance, err := plugin.NewDatasource(context.Background(), config)
+// 	instance, err := plugin.NewDatasource(context.Background(), config)
 
-	if err != nil {
-		t.Errorf("unexpected error: %s", err)
-	}
-	if instance == nil {
-		t.Error("expected instance to be non-nil")
-	}
-}
+// 	if err != nil {
+// 		t.Errorf("unexpected error: %s", err)
+// 	}
+// 	if instance == nil {
+// 		t.Error("expected instance to be non-nil")
+// 	}
+// }
 
 func TestNewDatasource_InvalidJSON(t *testing.T) {
 	config := backend.DataSourceInstanceSettings{
