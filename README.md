@@ -2,7 +2,7 @@
 
 The SurrealDB datasource plugin enables you to query and visualize SurrealDB data directly within Grafana, offering seamless integration and exploration of SurrealDB datasets.
 
-## ⚠️ This plugin is currently in alpha
+## ⚠️ This plugin is currently experimental
 
 This means that while we believe in its potential and are enthusiastic about its development, **we are not yet ready to make a long-term commitment to maintaining it indefinitely**. The plugin is still under active development and may contain bugs. We do not recommend using this plugin in production environments.
 
