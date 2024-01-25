@@ -1,5 +1,5 @@
 import React, { ChangeEvent } from 'react';
-import { Divider, Field, Input, SecretInput } from '@grafana/ui';
+import { Alert, Divider, Field, Input, SecretInput, TextLink, VerticalGroup } from '@grafana/ui';
 import { DataSourceDescription, ConfigSection } from '@grafana/experimental';
 import { DataSourcePluginOptionsEditorProps } from '@grafana/data';
 import type { SurrealDataSourceOptions, SurrealSecureJsonData } from '../types';
@@ -87,6 +87,22 @@ export function ConfigEditor({ onOptionsChange, options }: Props) {
         hasRequiredFields
       />
       <Divider />
+      <Alert title="This datasource is currently experimental" severity="warning">
+        <VerticalGroup>
+          <div>
+            This means that you might encounter unexpected behavior, bugs, or limitations while using this datasource.
+            We strongly advise exercising caution and understanding the potential risks associated with using
+            experimental software.
+          </div>
+          <div>
+            Found a bug? Have a suggestion? Open an issue on{' '}
+            <TextLink href="https://github.com/grafana/surrealdb-datasource/issues" external inline>
+              Github
+            </TextLink>
+            !
+          </div>
+        </VerticalGroup>
+      </Alert>
       <ConfigSection title="Server">
         <Field
           required
