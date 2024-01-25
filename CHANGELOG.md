@@ -1,5 +1,5 @@
 # Changelog
 
-## 1.0.0 (Unreleased)
+## 0.1.0
 
-Initial release.
+Released 25/01/2024. Initial experimental release.
