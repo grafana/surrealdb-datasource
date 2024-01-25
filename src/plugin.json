@@ -24,5 +24,6 @@
   "dependencies": {
     "grafanaDependency": ">=9.5.3",
     "plugins": []
-  }
+  },
+  "category": "sql"
 }
