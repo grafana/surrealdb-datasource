@@ -58,7 +58,7 @@
     "@grafana/experimental": "^1.7.8",
     "@grafana/runtime": "10.3.1",
     "@grafana/ui": "10.3.1",
-    "react": "17.0.2",
+    "react": "18.2.0",
     "react-dom": "17.0.2",
     "tslib": "2.6.2"
   },
