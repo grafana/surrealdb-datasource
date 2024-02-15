@@ -5,6 +5,7 @@
   "id": "grafana-surrealdb-datasource",
   "metrics": true,
   "backend": true,
+  "alerting": true,
   "executable": "gpx_surrealdb",
   "info": {
     "description": "SurrealDB datasource plugin for Grafana",
