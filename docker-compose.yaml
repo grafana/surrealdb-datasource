@@ -2,22 +2,42 @@ version: '3.0'
 
 services:
   grafana:
-    container_name: grafanalabs-surrealdb-datasource
+    container_name: grafana
     build:
       context: ./.config
       args:
-        grafana_version: ${GRAFANA_VERSION:-9.5.3}
+        grafana_image: ${GRAFANA_IMAGE:-grafana-enterprise}
+        grafana_version: ${GRAFANA_VERSION:-10.2.4}
     ports:
-      - 3000:3000/tcp
+      - 3000:3000
     volumes:
       - ./dist:/var/lib/grafana/plugins/grafanalabs-surrealdb-datasource
       - ./provisioning:/etc/grafana/provisioning
+    environment:
+      - GF_LOG_LEVEL=debug
+    networks:
+      - surrealdb
   surrealdb:
     image: surrealdb/surrealdb:latest
     container_name: surrealdb
     restart: always
-    command: start --user grafana --pass password file:/data/database.db
+    command: start --username root --password test --allow-all
     ports:
       - 8000:8000
+    networks:
+      - surrealdb
+  test-data-loader:
+    image: curlimages/curl:latest
+    container_name: test-data-loader
+    command: |
+      -v -X POST -u 'root:test' -H 'NS: test' -H 'DB: test' -H 'Accept: application/json' --data-binary @/dev/shm/surreal-deal-v1.surql http://surrealdb:8000/import
+    depends_on:
+      - surrealdb
+    restart: on-failure
     volumes:
-      - ./tmp/data:/data
+      - ./e2e/fixtures/surreal-deal-v1.surql:/dev/shm/surreal-deal-v1.surql
+    networks:
+      - surrealdb
+
+networks:
+  surrealdb:

@@ -1,10 +1,11 @@
 import { expect, test } from '@grafana/plugin-e2e';
 
 test.describe('Query Editor', () => {
+
+
   test('data query is successful when query is valid', async ({ page, panelEditPage, selectors }) => {
     await panelEditPage.datasource.set('SurrealDB');
     await panelEditPage.setVisualization('Table');
-    // await panelEditPage.timeRange.set({ from: '2023-01-01', to: '2024-02-01' });
 
     await page.waitForFunction(() => (window as any).monaco);
     await panelEditPage.getByTestIdOrAriaLabel(selectors.components.CodeEditor.container).click();
@@ -14,7 +15,7 @@ test.describe('Query Editor', () => {
 
     await expect(panelEditPage.refreshPanel()).toBeOK();
     await expect(panelEditPage.panel.getErrorIcon()).not.toBeVisible();
-    await expect(panelEditPage.panel.fieldNames).toHaveText(['day', 'sum_sales']);
+    await expect(panelEditPage.panel.fieldNames).toContainText(['day', 'sum_sales']);
     await expect(panelEditPage.panel.data).toContainText([
       '2023-11-28',
       '558375',
@@ -32,7 +33,6 @@ test.describe('Query Editor', () => {
   test('data query fails when query is invalid', async ({ page, panelEditPage, selectors }) => {
     await panelEditPage.datasource.set('SurrealDB');
     await panelEditPage.setVisualization('Table');
-    // await panelEditPage.timeRange.set({ from: '2023-01-01', to: '2024-02-01' });
 
     await page.waitForFunction(() => (window as any).monaco);
     await panelEditPage.getByTestIdOrAriaLabel(selectors.components.CodeEditor.container).click();

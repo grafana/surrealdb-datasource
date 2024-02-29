@@ -19,6 +19,8 @@ export default defineConfig<PluginOptions>({
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
     baseURL: `http://localhost:${process.env.PORT || 3000}`,
+    screenshot: 'only-on-failure',
+    video: 'on'
   },
 
   /* Configure projects for major browsers */
@@ -37,11 +39,4 @@ export default defineConfig<PluginOptions>({
       dependencies: ['auth'],
     },
   ],
-
-  /* Run your local dev server before starting the tests */
-  // webServer: {
-  //   command: 'npm run start',
-  //   url: 'http://127.0.0.1:3000',
-  //   reuseExistingServer: !process.env.CI,
-  // },
 });

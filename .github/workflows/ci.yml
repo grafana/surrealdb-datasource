@@ -49,7 +49,7 @@ jobs:
         if: steps.check-for-backend.outputs.has-backend == 'true'
         uses: actions/setup-go@v5
         with:
-          go-version: '1.21'
+          go-version: '1.22'
 
       - name: Test backend
         if: steps.check-for-backend.outputs.has-backend == 'true'
@@ -64,3 +64,67 @@ jobs:
         with:
           version: latest
           args: buildAll
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: plugin-dist
+          path: dist/
+          retention-days: 1
+
+    timeout-minutes: 60
+  e2e:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'yarn'
+
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+
+      - name: Install Playwright Browsers
+        run: yarn playwright install --with-deps
+
+      - name: Download plugin-dist artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: plugin-dist
+          path: dist/
+
+      # actions/download-artifact@v4 does not keep executable permissions
+      # intact, so we need to restore them manually.
+      - name: Restore executable permissions
+        run: |
+          TARGET_DIR="dist/"
+
+          if [ -d "$TARGET_DIR" ]; then
+            for file in ${TARGET_DIR}gpx_*; do
+              if [ -f "$file" ] && [ ! -x "$file" ]; then
+                echo "Setting executable permission for $file"
+                chmod +x "$file"
+              fi
+            done
+          else
+            echo "Directory $TARGET_DIR does not exist."
+          fi
+
+      - name: Install and run Docker Compose
+        uses: isbang/compose-action@v1.5.1
+        with:
+          compose-file: './docker-compose.yaml'
+
+      - name: Run Playwright tests
+        run: yarn playwright test
+      
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: playwright-report
+          path: playwright-report/
+          retention-days: 30
+
+    timeout-minutes: 60
