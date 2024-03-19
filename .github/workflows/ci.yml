@@ -24,13 +24,14 @@ jobs:
       - name: Test backend
         uses: magefile/mage-action@v3
         with:
+          args: coverage
           version: latest
 
       - name: Build backend
         uses: magefile/mage-action@v3
         with:
-          version: latest
           args: buildAll
+          version: latest
 
       - uses: actions/upload-artifact@v4
         with:
@@ -46,8 +47,8 @@ jobs:
       - name: Setup Node.js environment
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
           cache: 'yarn'
+          node-version: '20'
 
       - name: Install dependencies
         run: yarn install --frozen-lockfile
