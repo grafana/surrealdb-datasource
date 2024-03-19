@@ -49,7 +49,7 @@ jobs:
         if: steps.check-for-backend.outputs.has-backend == 'true'
         uses: actions/setup-go@v5
         with:
-          go-version: '1.21'
+          go-version: '1.22'
 
       - name: Test backend
         if: steps.check-for-backend.outputs.has-backend == 'true'
@@ -65,30 +65,66 @@ jobs:
           version: latest
           args: buildAll
 
-      # - name: Check for E2E
-      #   id: check-for-e2e
-      #   run: |
-      #     if [ -d "cypress" ]
-      #     then
-      #       echo "has-e2e=true" >> $GITHUB_OUTPUT
-      #     fi
+      - uses: actions/upload-artifact@v4
+        with:
+          name: plugin-dist
+          path: dist/
+          retention-days: 1
 
-      # - name: Start grafana docker
-      #   if: steps.check-for-e2e.outputs.has-e2e == 'true'
-      #   run: docker-compose up -d
+    timeout-minutes: 60
+  e2e:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
 
-      # - name: Run e2e tests
-      #   if: steps.check-for-e2e.outputs.has-e2e == 'true'
-      #   run: yarn e2e
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'yarn'
 
-      # - name: Stop grafana docker
-      #   if: steps.check-for-e2e.outputs.has-e2e == 'true'
-      #   run: docker-compose down
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
 
-      # - name: Archive E2E output
-      #   uses: actions/upload-artifact@v4
-      #   if: steps.check-for-e2e.outputs.has-e2e == 'true' && steps.run-e2e-tests.outcome != 'success'
-      #   with:
-      #     name: cypress-videos
-      #     path: cypress/videos
-      #     retention-days: 5
+      - name: Install Playwright Browsers
+        run: yarn playwright install --with-deps
+
+      - name: Download plugin-dist artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: plugin-dist
+          path: dist/
+
+      # actions/download-artifact@v4 does not keep executable permissions
+      # intact, so we need to restore them manually.
+      - name: Restore executable permissions
+        run: |
+          TARGET_DIR="dist/"
+
+          if [ -d "$TARGET_DIR" ]; then
+            for file in ${TARGET_DIR}gpx_*; do
+              if [ -f "$file" ] && [ ! -x "$file" ]; then
+                echo "Setting executable permission for $file"
+                chmod +x "$file"
+              fi
+            done
+          else
+            echo "Directory $TARGET_DIR does not exist."
+          fi
+
+      - name: Install and run Docker Compose
+        uses: isbang/compose-action@v1.5.1
+        with:
+          compose-file: './docker-compose.yaml'
+
+      - name: Run Playwright tests
+        run: yarn playwright test
+      
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: playwright-report
+          path: playwright-report/
+          retention-days: 30
+
+    timeout-minutes: 60
