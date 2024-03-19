@@ -11,7 +11,34 @@ on:
       - main
 
 jobs:
-  build:
+  build-backend:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Go environment
+        uses: actions/setup-go@v5
+        with:
+          go-version: '1.22'
+
+      - name: Test backend
+        uses: magefile/mage-action@v3
+        with:
+          version: latest
+
+      - name: Build backend
+        uses: magefile/mage-action@v3
+        with:
+          version: latest
+          args: buildAll
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: backend-dist
+          path: dist/
+          retention-days: 1
+
+  build-frontend:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -37,39 +64,10 @@ jobs:
       - name: Build frontend
         run: yarn build
 
-      - name: Check for backend
-        id: check-for-backend
-        run: |
-          if [ -f "Magefile.go" ]
-          then
-            echo "has-backend=true" >> $GITHUB_OUTPUT
-          fi
-
-      - name: Setup Go environment
-        if: steps.check-for-backend.outputs.has-backend == 'true'
-        uses: actions/setup-go@v5
-        with:
-          go-version: '1.22'
-
-      - name: Test backend
-        if: steps.check-for-backend.outputs.has-backend == 'true'
-        uses: magefile/mage-action@v3
-        with:
-          version: latest
-          # args: coverage
-
-      - name: Build backend
-        if: steps.check-for-backend.outputs.has-backend == 'true'
-        uses: magefile/mage-action@v3
-        with:
-          version: latest
-          args: buildAll
-
       - uses: actions/upload-artifact@v4
         with:
-          name: plugin-dist
+          name: frontend-dist
           path: dist/
           retention-days: 1
-
+          
     timeout-minutes: 60
-  
