@@ -12,15 +12,6 @@ import (
 	"github.com/grafana/grafana-plugin-sdk-go/backend"
 )
 
-// IMPORTANT!
-//
-// As it stands, this test suite requires a running instance of SurrealDB. You
-// can start one by bringing up the Docker containers with the following command:
-//
-// `docker-compose up -d`
-//
-// What can be tested in isolation at the moment, is being tested in isolation.
-
 var mock = mocks.MockSurrealDBClient{}
 
 var config = client.SurrealConfig{
@@ -29,29 +20,6 @@ var config = client.SurrealConfig{
 	Namespace: "grafana",
 	Username:  "grafana",
 }
-
-// @TODO: Move this test to an integration test suite.
-// func TestNewDatasource_Success(t *testing.T) {
-// 	msg, err := json.Marshal(config)
-
-// 	if err != nil {
-// 		t.Errorf("unexpected error: %s", err)
-// 	}
-
-// 	config := backend.DataSourceInstanceSettings{
-// 		JSONData:                msg,
-// 		DecryptedSecureJSONData: map[string]string{"password": "password"},
-// 	}
-
-// 	instance, err := plugin.NewDatasource(context.Background(), config)
-
-// 	if err != nil {
-// 		t.Errorf("unexpected error: %s", err)
-// 	}
-// 	if instance == nil {
-// 		t.Error("expected instance to be non-nil")
-// 	}
-// }
 
 func TestNewDatasource_InvalidJSON(t *testing.T) {
 	config := backend.DataSourceInstanceSettings{
