@@ -53,7 +53,7 @@
     "typescript": "5.4.2",
     "webpack-cli": "^5.1.4",
     "webpack-livereload-plugin": "^3.0.2",
-    "webpack": "^5.90.3",
+    "webpack": "^5.91.0",
     "@grafana/e2e": "10.3.3",
     "@grafana/e2e-selectors": "10.3.3",
     "@types/react-router-dom": "^5.2.0",
