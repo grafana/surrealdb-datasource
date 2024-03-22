@@ -20,7 +20,7 @@
   "author": "Grafana Labs",
   "license": "Apache-2.0",
   "devDependencies": {
-    "@babel/core": "^7.24.1",
+    "@babel/core": "^7.24.3",
     "@grafana/eslint-config": "^7.0.0",
     "@grafana/plugin-e2e": "0.22.0",
     "@grafana/tsconfig": "^1.2.0-rc1",
