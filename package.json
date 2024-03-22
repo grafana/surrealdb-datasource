@@ -57,7 +57,7 @@
     "@grafana/e2e": "10.4.1",
     "@grafana/e2e-selectors": "10.4.1",
     "@types/react-router-dom": "^5.2.0",
-    "@types/testing-library__jest-dom": "5.14.8"
+    "@types/testing-library__jest-dom": "6.0.0"
   },
   "engines": {
     "node": ">=20"
