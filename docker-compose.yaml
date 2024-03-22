@@ -14,7 +14,7 @@ services:
       - ./dist:/var/lib/grafana/plugins/grafanalabs-surrealdb-datasource
       - ./provisioning:/etc/grafana/provisioning
     healthcheck:
-      test: ["CMD", "curl", "--fail", "http://localhost:3000/api/health"]
+      test: ["CMD", "curl", "--fail", "http://localhost:3000/login"]
       interval: 1m30s
       timeout: 30s
       retries: 5
