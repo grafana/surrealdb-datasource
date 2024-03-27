@@ -13,6 +13,7 @@ services:
     volumes:
       - ./dist:/var/lib/grafana/plugins/grafanalabs-surrealdb-datasource
       - ./provisioning:/etc/grafana/provisioning
+      - .:/root/grafana-surrealdb-datasource
     healthcheck:
       test: ["CMD", "curl", "--fail", "http://localhost:3000/login"]
       interval: 1m30s
