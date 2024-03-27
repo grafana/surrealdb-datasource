@@ -7,15 +7,14 @@
     "dev": "webpack -w -c ./.config/webpack/webpack.config.ts --env development",
     "e2e:report": "yarn playwright show-report",
     "e2e:ui": "yarn playwright test --ui",
-    "e2e": "yarn exec cypress install && yarn exec grafana-e2e run",
+    "e2e": "yarn playwright test",
     "lint:fix": "yarn run lint --fix",
     "lint": "eslint --cache --ignore-path ./.gitignore --ext .js,.jsx,.ts,.tsx .",
     "server": "docker-compose up --build",
     "sign": "npx --yes @grafana/sign-plugin@latest",
     "test:ci": "jest --passWithNoTests --maxWorkers 4",
     "test": "jest --watch --onlyChanged",
-    "typecheck": "tsc --noEmit",
-    "e2e:update": "yarn exec cypress install && yarn exec grafana-e2e run --update-screenshots"
+    "typecheck": "tsc --noEmit"
   },
   "author": "Grafana Labs",
   "license": "Apache-2.0",
@@ -33,6 +32,7 @@
     "@types/jest": "^29.5.12",
     "@types/lodash": "^4.17.0",
     "@types/node": "^20.11.30",
+    "@types/react-router-dom": "^5.2.0",
     "copy-webpack-plugin": "^12.0.2",
     "css-loader": "^6.10.0",
     "eslint-plugin-deprecation": "^2.0.0",
@@ -53,11 +53,7 @@
     "typescript": "5.4.3",
     "webpack-cli": "^5.1.4",
     "webpack-livereload-plugin": "^3.0.2",
-    "webpack": "^5.91.0",
-    "@grafana/e2e": "10.4.1",
-    "@grafana/e2e-selectors": "10.4.1",
-    "@types/react-router-dom": "^5.2.0",
-    "@types/testing-library__jest-dom": "5.14.8"
+    "webpack": "^5.91.0"
   },
   "engines": {
     "node": ">=20"
@@ -67,11 +63,11 @@
     "@grafana/data": "10.4.1",
     "@grafana/experimental": "^1.7.10",
     "@grafana/runtime": "10.4.1",
+    "@grafana/schema": "10.4.1",
     "@grafana/ui": "10.4.1",
-    "react": "18.2.0",
     "react-dom": "18.2.0",
-    "tslib": "2.6.2",
-    "@grafana/schema": "10.4.1"
+    "react": "18.2.0",
+    "tslib": "2.6.2"
   },
   "resolutions": {
     "jackspeak": "2.1.1"
