@@ -28,9 +28,9 @@ jobs:
       - name: Install Playwright Browsers
         run: yarn playwright install --with-deps
 
-      - name: Setup tmate session to add artifacts
-        uses: mxschmitt/action-tmate@v3
-        # if: ${{ github.event_name == 'workflow_dispatch' && inputs.debug_enabled }}
+      # - name: Setup tmate session to add artifacts
+      #   uses: mxschmitt/action-tmate@v3
+      #   # if: ${{ github.event_name == 'workflow_dispatch' && inputs.debug_enabled }}
 
       # - name: Download plugin-dist artifact
       #   uses: actions/download-artifact@v4
@@ -59,14 +59,17 @@ jobs:
             echo "Directory $TARGET_DIR does not exist."
           fi
 
+      - name: Build FE
+        run: yarn build
+
       - name: Install and run Docker Compose
         uses: isbang/compose-action@v1.5.1
         with:
           compose-file: './docker-compose.yaml'
 
-      - name: Setup tmate session
-        uses: mxschmitt/action-tmate@v3
-        # if: ${{ github.event_name == 'workflow_dispatch' && inputs.debug_enabled }}
+      # - name: Setup tmate session
+      #   uses: mxschmitt/action-tmate@v3
+      #   # if: ${{ github.event_name == 'workflow_dispatch' && inputs.debug_enabled }}
 
       - name: Run Playwright tests
         run: yarn playwright test
