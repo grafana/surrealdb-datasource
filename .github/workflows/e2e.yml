@@ -71,6 +71,13 @@ jobs:
       #   uses: mxschmitt/action-tmate@v3
       #   # if: ${{ github.event_name == 'workflow_dispatch' && inputs.debug_enabled }}
 
+      - name: Wait for services to be ready
+        run: |
+          for i in {1..30}; do
+            curl -s http://localhost:3000/login && break
+            sleep 1
+          done
+
       - name: Run Playwright tests
         run: yarn playwright test
 
