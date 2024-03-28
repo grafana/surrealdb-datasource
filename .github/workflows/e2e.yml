@@ -57,12 +57,12 @@ jobs:
           compose-file: './docker-compose.yaml'
 
       - name: Wait for Grafana to start
-        run: |
-          for i in {1..30}; do
-            curl -s http://localhost:3000/login && break
-            sleep 1
-          done
-
+        uses: nev7n/wait_for_response@v1
+        with:
+          url: 'http://localhost:3000/'
+          responseCode: 200
+          timeout: 60000
+          interval: 500
       - name: Run Playwright tests
         run: yarn playwright test
 
