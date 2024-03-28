@@ -24,9 +24,6 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Setup tmate session
-        uses: mxschmitt/action-tmate@v3
-        # if: ${{ github.event_name == 'workflow_dispatch' && inputs.debug_enabled }}
 
       - uses: actions/setup-node@v4
         with:
@@ -39,15 +36,19 @@ jobs:
       - name: Install Playwright Browsers
         run: yarn playwright install --with-deps
 
-      - name: Download plugin-dist artifact
-        uses: actions/download-artifact@v4
-        with:
-          github-token: ${{ secrets.GH_PAT }}
-          merge-multiple: true
-          path: dist/
-          pattern: '*-dist'
-          repository: ${{ github.repository }}
-          run-id: ${{ github.event.workflow_run.id }}
+      - name: Setup tmate session
+        uses: mxschmitt/action-tmate@v3
+        # if: ${{ github.event_name == 'workflow_dispatch' && inputs.debug_enabled }}
+
+      # - name: Download plugin-dist artifact
+      #   uses: actions/download-artifact@v4
+      #   with:
+      #     github-token: ${{ secrets.GH_PAT }}
+      #     merge-multiple: true
+      #     path: dist/
+      #     pattern: '*-dist'
+      #     repository: ${{ github.repository }}
+      #     run-id: ${{ github.event.workflow_run.id }}
 
       # actions/download-artifact@v4 does not keep executable permissions
       # intact, so we need to restore them manually.
@@ -70,6 +71,10 @@ jobs:
         uses: isbang/compose-action@v1.5.1
         with:
           compose-file: './docker-compose.yaml'
+
+      - name: Setup tmate session
+        uses: mxschmitt/action-tmate@v3
+        # if: ${{ github.event_name == 'workflow_dispatch' && inputs.debug_enabled }}
 
       - name: Run Playwright tests
         run: yarn playwright test
