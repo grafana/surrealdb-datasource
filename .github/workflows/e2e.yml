@@ -1,10 +1,10 @@
 name: E2E Tests
 
 on:
-  workflow_run:
-    workflows: [CI]
-    types:
-      - completed
+  # workflow_run:
+  #   workflows: [CI]
+  #   types:
+  #     - completed
   workflow_dispatch:
     inputs:
       debug_enabled:
@@ -12,17 +12,21 @@ on:
         description: 'Run the build with tmate debugging enabled (https://github.com/marketplace/actions/debugging-with-tmate)'
         required: false
         default: false
+  pull_request:
+    branches:
+      - master
+      - main
 
 jobs:
   e2e:
     runs-on: ubuntu-latest
-    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    # if: ${{ github.event.workflow_run.conclusion == 'success' }}
     steps:
       - uses: actions/checkout@v4
 
       - name: Setup tmate session
         uses: mxschmitt/action-tmate@v3
-        if: ${{ github.event_name == 'workflow_dispatch' && inputs.debug_enabled }}
+        # if: ${{ github.event_name == 'workflow_dispatch' && inputs.debug_enabled }}
 
       - uses: actions/setup-node@v4
         with:
