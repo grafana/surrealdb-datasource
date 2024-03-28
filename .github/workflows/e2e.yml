@@ -5,6 +5,13 @@ on:
     workflows: [CI]
     types:
       - completed
+  workflow_dispatch:
+    inputs:
+      debug_enabled:
+        type: boolean
+        description: 'Run the build with tmate debugging enabled (https://github.com/marketplace/actions/debugging-with-tmate)'
+        required: false
+        default: false
 
 jobs:
   e2e:
@@ -12,6 +19,10 @@ jobs:
     if: ${{ github.event.workflow_run.conclusion == 'success' }}
     steps:
       - uses: actions/checkout@v4
+
+      - name: Setup tmate session
+        uses: mxschmitt/action-tmate@v3
+        if: ${{ github.event_name == 'workflow_dispatch' && inputs.debug_enabled }}
 
       - uses: actions/setup-node@v4
         with:
@@ -30,7 +41,7 @@ jobs:
           github-token: ${{ secrets.GH_PAT }}
           merge-multiple: true
           path: dist/
-          pattern: "*-dist"
+          pattern: '*-dist'
           repository: ${{ github.repository }}
           run-id: ${{ github.event.workflow_run.id }}
 
@@ -58,7 +69,7 @@ jobs:
 
       - name: Run Playwright tests
         run: yarn playwright test
-      
+
       - uses: actions/upload-artifact@v4
         if: always()
         with:
@@ -67,4 +78,3 @@ jobs:
           retention-days: 30
 
     timeout-minutes: 60
-      
