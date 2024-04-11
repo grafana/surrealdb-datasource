@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.1.2
+
+Released 11/04/2024.
+
+- Fixed Alerting support not activated.
+- Go version update to 1.21.6.
+- Dependency updates.
+
 ## 0.1.1
 
 Released 01/02/2024.
