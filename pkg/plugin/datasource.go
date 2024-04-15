@@ -58,9 +58,7 @@ func NewDatasource(ctx context.Context, dsiConfig backend.DataSourceInstanceSett
 	return NewDatasourceInstance(db, &config), nil
 }
 
-// Dispose here tells plugin SDK that plugin wants to clean up resources when a new instance
-// created. As soon as datasource settings change detected by SDK old datasource instance will
-// be disposed and a new one will be created using NewSampleDatasource factory function.
+// Dispose cleans up the datasource instance resources.
 func (d *SurrealDatasource) Dispose() {
 	// Clean up datasource instance resources.
 	// d.db.Close()
