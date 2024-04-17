@@ -8,6 +8,8 @@ services:
       args:
         grafana_image: ${GRAFANA_IMAGE:-grafana-enterprise}
         grafana_version: ${GRAFANA_VERSION:-10.2.4}
+        # remove the following line when developing to have backend debugger
+        development: "false"
     ports:
       - 3000:3000
     volumes:
