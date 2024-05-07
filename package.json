@@ -24,7 +24,7 @@
     "@grafana/plugin-e2e": "1.1.0",
     "@grafana/tsconfig": "^1.2.0-rc1",
     "@playwright/test": "^1.43.1",
-    "@swc/core": "^1.4.11",
+    "@swc/core": "^1.5.3",
     "@swc/helpers": "^0.5.11",
     "@swc/jest": "^0.2.36",
     "@testing-library/jest-dom": "6.4.2",
