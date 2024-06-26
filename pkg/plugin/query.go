@@ -21,12 +21,12 @@ func (d *SurrealDatasource) createQuery(_ context.Context, pCtx backend.PluginCo
 
 	err := json.Unmarshal(query.JSON, &qm)
 	if err != nil {
-		return backend.ErrDataResponse(backend.StatusBadRequest, fmt.Sprintf("json unmarshal: %v", err.Error()))
+		return backend.ErrDataResponseWithSource(backend.StatusBadRequest, backend.ErrorSourcePlugin, fmt.Sprintf("json unmarshal: %v", err.Error()))
 	}
 
 	r, err := d.db.Query(qm.Text, nil)
 	if err != nil {
-		return backend.ErrDataResponse(backend.StatusBadRequest, fmt.Sprintf("query: %v", err.Error()))
+		return backend.ErrDataResponseWithSource(backend.StatusBadRequest, backend.ErrorSourceDownstream, fmt.Sprintf("query: %v", err.Error()))
 	}
 
 	// create data frame response.
@@ -41,7 +41,7 @@ func (d *SurrealDatasource) createQuery(_ context.Context, pCtx backend.PluginCo
 	ok, err := surrealdb.UnmarshalRaw(r, &res)
 
 	if err != nil {
-		return backend.ErrDataResponse(backend.StatusBadRequest, fmt.Sprintf("unmarshal: %v", err.Error()))
+		return backend.ErrDataResponseWithSource(backend.StatusBadRequest, backend.ErrorSourcePlugin, fmt.Sprintf("unmarshal: %v", err.Error()))
 	}
 
 	if !ok {
