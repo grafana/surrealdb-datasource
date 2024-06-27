@@ -9,6 +9,7 @@ import (
 	"github.com/grafana-labs/surrealdb-datasource/pkg/client"
 	"github.com/grafana/grafana-plugin-sdk-go/backend"
 	"github.com/grafana/grafana-plugin-sdk-go/backend/instancemgmt"
+	"github.com/grafana/grafana-plugin-sdk-go/experimental/slo"
 	"github.com/surrealdb/surrealdb.go"
 )
 
@@ -55,7 +56,7 @@ func NewDatasource(ctx context.Context, dsiConfig backend.DataSourceInstanceSett
 		return nil, fmt.Errorf("unable to connect to database: %w", err)
 	}
 
-	return NewDatasourceInstance(db, &config), nil
+	return slo.NewMetricsWrapper(NewDatasourceInstance(db, &config), dsiConfig), nil
 }
 
 // Dispose cleans up the datasource instance resources.
