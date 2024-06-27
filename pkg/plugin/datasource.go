@@ -95,18 +95,11 @@ func (d *SurrealDatasource) QueryData(ctx context.Context, req *backend.QueryDat
 // The main use case for these health checks is the test button on the
 // datasource configuration page which allows users to verify that
 // a datasource is working as expected.
-func (d *SurrealDatasource) CheckHealth(_ context.Context, req *backend.CheckHealthRequest) (*backend.CheckHealthResult, error) {
+func (d *SurrealDatasource) CheckHealth(ctx context.Context, req *backend.CheckHealthRequest) (*backend.CheckHealthResult, error) {
 	status := backend.HealthStatusOk
 	message := "Data source is working"
 
-	result := make(chan error)
-
-	go func() {
-		_, err := d.db.Query("BEGIN TRANSACTION; CANCEL TRANSACTION;", nil)
-		result <- err
-	}()
-
-	err := <-result
+	_, err := d.queryWithContext(ctx, "BEGIN TRANSACTION; CANCEL TRANSACTION;", nil)
 
 	if err != nil {
 		status = backend.HealthStatusError
