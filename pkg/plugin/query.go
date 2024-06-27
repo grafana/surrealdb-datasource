@@ -15,8 +15,7 @@ type queryModel struct {
 }
 
 // query is the internal implementation of executing queries in the Surreal datasource.
-func (d *SurrealDatasource) createQuery(_ context.Context, pCtx backend.PluginContext, query backend.DataQuery) backend.DataResponse {
-	// Unmarshal the JSON into our queryModel.
+func (d *SurrealDatasource) createQuery(ctx context.Context, _ backend.PluginContext, query backend.DataQuery) backend.DataResponse {
 	var qm queryModel
 
 	err := json.Unmarshal(query.JSON, &qm)
@@ -24,14 +23,11 @@ func (d *SurrealDatasource) createQuery(_ context.Context, pCtx backend.PluginCo
 		return backend.ErrDataResponseWithSource(backend.StatusBadRequest, backend.ErrorSourcePlugin, fmt.Sprintf("json unmarshal: %v", err.Error()))
 	}
 
-	r, err := d.db.Query(qm.Text, nil)
+	r, err := d.queryWithContext(ctx, qm.Text, nil)
 	if err != nil {
 		return backend.ErrDataResponseWithSource(backend.StatusBadRequest, backend.ErrorSourceDownstream, fmt.Sprintf("query: %v", err.Error()))
 	}
 
-	// create data frame response.
-	// For an overview on data frames and how grafana handles them:
-	// https://grafana.com/docs/grafana/latest/developers/plugins/data-frames/
 	var response backend.DataResponse
 
 	// unmarshal the response into a slice of maps.
@@ -64,6 +60,10 @@ func (d *SurrealDatasource) toDataFrame(resp []map[string]json.RawMessage) *data
 
 	buckets := map[string][]json.RawMessage{}
 
+	if len(resp) == 0 {
+		return frame
+	}
+
 	for _, entity := range resp {
 		for k, v := range entity {
 			buckets[k] = append(buckets[k], v)
@@ -76,4 +76,28 @@ func (d *SurrealDatasource) toDataFrame(resp []map[string]json.RawMessage) *data
 	}
 
 	return frame
+}
+
+// QueryWithContext wraps the Query method to handle context for cancellation/timeout
+func (d *SurrealDatasource) queryWithContext(ctx context.Context, query string, args interface{}) (interface{}, error) {
+	rc := make(chan interface{})
+	ec := make(chan error)
+
+	go func() {
+		r, err := d.db.Query(query, args)
+		if err != nil {
+			ec <- err
+			return
+		}
+		rc <- r
+	}()
+
+	select {
+	case <-ctx.Done():
+		return nil, ctx.Err()
+	case err := <-ec:
+		return nil, err
+	case result := <-rc:
+		return result, nil
+	}
 }
