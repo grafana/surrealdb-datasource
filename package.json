@@ -23,7 +23,7 @@
     "@grafana/eslint-config": "^7.0.0",
     "@grafana/plugin-e2e": "1.6.0",
     "@grafana/tsconfig": "^1.2.0-rc1",
-    "@playwright/test": "^1.44.0",
+    "@playwright/test": "^1.45.2",
     "@swc/core": "^1.5.5",
     "@swc/helpers": "^0.5.11",
     "@swc/jest": "^0.2.36",
