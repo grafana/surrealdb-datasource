@@ -36,7 +36,7 @@ func TestNewDatasource_InvalidJSON(t *testing.T) {
 
 func TestQueryData(t *testing.T) {
 	// Create a mock SurrealDatasource with a mock DB client
-	datasource := plugin.NewDatasourceInstance(&mock, &config)
+	datasource := plugin.NewDatasourceInstance(client.Use(&mock), &config)
 
 	mockRequest := backend.QueryDataRequest{
 		Queries: []backend.DataQuery{
@@ -63,7 +63,7 @@ func TestCheckHealth_Success(t *testing.T) {
 		},
 	}
 
-	datasource := plugin.NewDatasourceInstance(&successMock, &config)
+	datasource := plugin.NewDatasourceInstance(client.Use(&successMock), &config)
 	result, err := datasource.CheckHealth(context.Background(), &backend.CheckHealthRequest{})
 
 	if err != nil {
@@ -82,7 +82,7 @@ func TestCheckHealth_Error(t *testing.T) {
 		},
 	}
 
-	datasource := plugin.NewDatasourceInstance(&errorMock, &config)
+	datasource := plugin.NewDatasourceInstance(client.Use(&errorMock), &config)
 	result, err := datasource.CheckHealth(context.Background(), &backend.CheckHealthRequest{})
 
 	if err != nil {

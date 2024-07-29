@@ -1,5 +1,7 @@
 package client
 
+import "context"
+
 // SurrealConfig defines the configuration for the SurrealDB database.
 type SurrealConfig struct {
 	Database  string `json:"database,omitempty"`
@@ -49,4 +51,28 @@ func (c *Client) Connect(config *SurrealConfig) (bool, error) {
 	}
 
 	return true, nil
+}
+
+// QueryWithContext wraps the Query method to handle context for cancellation/timeout
+func (c *Client) QueryWithContext(ctx context.Context, query string, args interface{}) (interface{}, error) {
+	rc := make(chan interface{})
+	ec := make(chan error)
+
+	go func() {
+		r, err := c.db.Query(query, args)
+		if err != nil {
+			ec <- err
+			return
+		}
+		rc <- r
+	}()
+
+	select {
+	case <-ctx.Done():
+		return nil, ctx.Err()
+	case err := <-ec:
+		return nil, err
+	case result := <-rc:
+		return result, nil
+	}
 }

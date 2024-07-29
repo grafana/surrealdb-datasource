@@ -7,16 +7,16 @@ import type { SurrealDataSourceOptions, SurrealQuery } from '../types';
 type Props = QueryEditorProps<DataSource, SurrealQuery, SurrealDataSourceOptions>;
 
 export function QueryEditor({ query, onChange }: Props) {
-  const onQueryTextChange = (queryText: string) => onChange({ ...query, queryText });
+  const onQueryChange = (rawSql: string) => onChange({ ...query, rawSql });
 
-  const { queryText } = query;
+  const { rawSql } = query;
 
   return (
     <>
       <CodeEditor
         language="sql"
-        value={queryText}
-        onBlur={onQueryTextChange}
+        value={rawSql}
+        onBlur={onQueryChange}
         showMiniMap={false}
         showLineNumbers={true}
         height="240px"

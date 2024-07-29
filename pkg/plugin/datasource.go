@@ -21,14 +21,14 @@ var (
 
 // SurrealDatasource defines how to connect to the datasource and describes the query model.
 type SurrealDatasource struct {
-	db     client.SurrealDBClient
+	client *client.Client
 	config *client.SurrealConfig
 }
 
 // NewDatasourceInstance creates a new SurrealDatasource instance.
-func NewDatasourceInstance(db client.SurrealDBClient, config *client.SurrealConfig) *SurrealDatasource {
+func NewDatasourceInstance(client *client.Client, config *client.SurrealConfig) *SurrealDatasource {
 	return &SurrealDatasource{
-		db:     db,
+		client: client,
 		config: config,
 	}
 }
@@ -36,27 +36,27 @@ func NewDatasourceInstance(db client.SurrealDBClient, config *client.SurrealConf
 // NewDatasource creates a new datasource instance.
 func NewDatasource(ctx context.Context, dsiConfig backend.DataSourceInstanceSettings) (instancemgmt.Instance, error) {
 	var config client.SurrealConfig
+
 	err := json.Unmarshal(dsiConfig.JSONData, &config)
-
-	config.Password = dsiConfig.DecryptedSecureJSONData["password"]
-
 	if err != nil {
 		return nil, fmt.Errorf("unable to get settings from JSON config: %w", err)
 	}
 
-	db, err := surrealdb.New(config.Endpoint)
+	config.Password = dsiConfig.DecryptedSecureJSONData["password"]
 
+	db, err := surrealdb.New(config.Endpoint)
 	if err != nil {
 		return nil, err
 	}
 
-	_, err = client.Use(db).Connect(&config)
+	client := client.Use(db)
 
+	_, err = client.Connect(&config)
 	if err != nil {
 		return nil, fmt.Errorf("unable to connect to database: %w", err)
 	}
 
-	return slo.NewMetricsWrapper(NewDatasourceInstance(db, &config), dsiConfig), nil
+	return slo.NewMetricsWrapper(NewDatasourceInstance(client, &config), dsiConfig), nil
 }
 
 // Dispose cleans up the datasource instance resources.
@@ -82,7 +82,7 @@ func (d *SurrealDatasource) QueryData(ctx context.Context, req *backend.QueryDat
 			defer wg.Done()
 
 			mutex.Lock()
-			response.Responses[q.RefID] = d.createQuery(ctx, pluginCtx, q)
+			response.Responses[q.RefID] = d.createDataResponse(ctx, q)
 			mutex.Unlock()
 		}(ctx, req.PluginContext, query)
 	}
@@ -100,7 +100,7 @@ func (d *SurrealDatasource) CheckHealth(ctx context.Context, req *backend.CheckH
 	status := backend.HealthStatusOk
 	message := "Data source is working"
 
-	_, err := d.queryWithContext(ctx, "BEGIN TRANSACTION; CANCEL TRANSACTION;", nil)
+	_, err := d.client.QueryWithContext(ctx, "BEGIN TRANSACTION; CANCEL TRANSACTION;", nil)
 
 	if err != nil {
 		status = backend.HealthStatusError

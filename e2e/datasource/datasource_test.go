@@ -95,7 +95,7 @@ func createTestInstance() (instancemgmt.Instance, error) {
 
 // createJsonRequest creates a new JSON request for testing.
 func createJsonRequest(query string) json.RawMessage {
-	return json.RawMessage(`{"queryText":"` + query + `"}`)
+	return json.RawMessage(`{"rawSql":"` + query + `"}`)
 }
 
 func TestNewDatasource(t *testing.T) {

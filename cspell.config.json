@@ -28,6 +28,7 @@
     "grafanalabs",
     "instancemgmt",
     "jackspeak",
+    "sqlutil",
     "surrealdb",
     "typecheck",
     "vals"
