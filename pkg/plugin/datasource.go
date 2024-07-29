@@ -82,7 +82,7 @@ func (d *SurrealDatasource) QueryData(ctx context.Context, req *backend.QueryDat
 			defer wg.Done()
 
 			mutex.Lock()
-			response.Responses[q.RefID] = d.createDataResponse(ctx, q)
+			response.Responses[q.RefID] = d.CreateDataResponse(ctx, q)
 			mutex.Unlock()
 		}(ctx, req.PluginContext, query)
 	}

@@ -12,7 +12,7 @@ import (
 )
 
 // createDataResponse creates a data response from a data query.
-func (d *SurrealDatasource) createDataResponse(ctx context.Context, query backend.DataQuery) backend.DataResponse {
+func (d *SurrealDatasource) CreateDataResponse(ctx context.Context, query backend.DataQuery) backend.DataResponse {
 	str, err := sqlStringFromDataQuery(query)
 	if err != nil {
 		return backend.ErrDataResponseWithSource(backend.StatusBadRequest, backend.ErrorSourcePlugin, fmt.Sprintf("sql: %v", err.Error()))
