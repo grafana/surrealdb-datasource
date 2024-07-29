@@ -27,7 +27,7 @@ jobs:
           name: plugin-dist
           path: dist/
           github-token: ${{ secrets.GH_PAT }}
-          repository: ${{ env.GITHUB_REPOSITORY }}
+          repository: ${{ github.repository }}
           run-id: ${{ github.event.workflow_run.id }}
 
       # actions/download-artifact@v4 does not keep executable permissions
