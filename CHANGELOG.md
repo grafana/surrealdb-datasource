@@ -1,5 +1,16 @@
 # Changelog
 
+## 0.2.0
+
+Released 08/08/2024.
+
+- Added support for Grafana macros.
+- Added `QueryWithContext` method to better handle context cancellation and timeouts.
+- Added error source and metrics capture (internally used by Grafana Cloud).
+- Added integration tests.
+- Bump Go to 1.22.6.
+- Dependency updates.
+
 ## 0.1.2
 
 Released 11/04/2024.
