@@ -1,8 +1,8 @@
 module github.com/grafana-labs/surrealdb-datasource
 
-go 1.21
+go 1.22
 
-toolchain go1.21.6
+toolchain go1.22.6
 
 require (
 	github.com/grafana/grafana-plugin-sdk-go v0.242.0
