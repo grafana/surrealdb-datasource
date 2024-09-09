@@ -1,6 +1,6 @@
 {
   "name": "surrealdb-datasource",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "SurrealDB datasource plugin for Grafana",
   "scripts": {
     "build": "webpack -c ./.config/webpack/webpack.config.ts --env production",

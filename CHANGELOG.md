@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.2.1
+
+Released 09/09/2024.
+
+- Dependency updates.
+
 ## 0.2.0
 
 Released 08/08/2024.
