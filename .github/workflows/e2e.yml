@@ -52,7 +52,7 @@ jobs:
           fi
 
       - name: Install and run Docker Compose
-        uses: isbang/compose-action@v2.0.1
+        uses: isbang/compose-action@v2.0.2
         with:
           compose-file: './docker-compose.yaml'
 
