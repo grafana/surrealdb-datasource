@@ -10,6 +10,7 @@ import (
 	"github.com/grafana-labs/surrealdb-datasource/pkg/plugin"
 	"github.com/grafana/grafana-plugin-sdk-go/backend"
 	"github.com/grafana/grafana-plugin-sdk-go/backend/instancemgmt"
+	"github.com/grafana/grafana-plugin-sdk-go/experimental/slo"
 )
 
 // table is a list of test cases for the QueryData method.
@@ -121,7 +122,7 @@ func TestCheckHealth(t *testing.T) {
 		t.Errorf("unexpected error: %s", err)
 	}
 
-	res, err := (*instance.(*plugin.SurrealDatasource)).CheckHealth(context.Background(), &backend.CheckHealthRequest{})
+	res, err := (*instance.(*slo.MetricsWrapper)).CheckHealth(context.Background(), &backend.CheckHealthRequest{})
 
 	if err != nil {
 		t.Errorf("unexpected error: %s", err)
@@ -155,7 +156,7 @@ func TestQueryData_Success(t *testing.T) {
 				Queries: dqs,
 			}
 
-			res, err := (*instance.(*plugin.SurrealDatasource)).QueryData(context.Background(), &req)
+			res, err := (*instance.(*slo.MetricsWrapper)).QueryData(context.Background(), &req)
 
 			if err != nil {
 				t.Errorf("unexpected error: %s", err)
@@ -201,7 +202,7 @@ func TestQueryData_BadTableName(t *testing.T) {
 		Queries: dqs,
 	}
 
-	res, err := (*instance.(*plugin.SurrealDatasource)).QueryData(context.Background(), &req)
+	res, err := (*instance.(*slo.MetricsWrapper)).QueryData(context.Background(), &req)
 
 	if err != nil {
 		t.Errorf("unexpected error: %s", err)
@@ -237,7 +238,7 @@ func TestQueryData_BadQuerySyntax(t *testing.T) {
 		Queries: dqs,
 	}
 
-	res, err := (*instance.(*plugin.SurrealDatasource)).QueryData(context.Background(), &req)
+	res, err := (*instance.(*slo.MetricsWrapper)).QueryData(context.Background(), &req)
 
 	if err != nil {
 		t.Errorf("unexpected error: %s", err)
