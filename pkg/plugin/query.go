@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"sort"
 
 	"github.com/grafana/grafana-plugin-sdk-go/backend"
 	"github.com/grafana/grafana-plugin-sdk-go/data"
@@ -94,6 +95,9 @@ func toDataFrame(resp []map[string]json.RawMessage) *data.Frame {
 		field := data.NewField(key, nil, vals)
 		frame.Fields = append(frame.Fields, field)
 	}
+	sort.Slice(frame.Fields, func(i, j int) bool {
+		return frame.Fields[i].Name < frame.Fields[j].Name
+	})
 
 	return frame
 }
