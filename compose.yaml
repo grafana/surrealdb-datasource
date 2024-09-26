@@ -1,0 +1,54 @@
+# This docker compose file is for the v2 branch of SurrealDB. It is used for the CI pipeline 
+# and can also be used for local development. If you're looking for a compose file for the v1 branch,
+# please refer to the tests/config/v1/compose.yaml file.
+
+services:
+  grafana:
+    container_name: grafana
+    build:
+      context: ./.config
+      args:
+        grafana_image: ${GRAFANA_IMAGE:-grafana-enterprise}
+        grafana_version: ${GRAFANA_VERSION:-11.2.1}
+        # remove the following line when developing to have backend debugger
+        development: "false"
+    ports:
+      - 3000:3000
+    volumes:
+      - ./dist:/var/lib/grafana/plugins/grafanalabs-surrealdb-datasource
+      - ./provisioning:/etc/grafana/provisioning
+      - .:/root/grafana-surrealdb-datasource
+    healthcheck:
+      test: ["CMD", "curl", "--fail", "http://localhost:3000/login"]
+      interval: 1m30s
+      timeout: 30s
+      retries: 5
+      start_period: 30s
+    environment:
+      - GF_LOG_LEVEL=debug
+    networks:
+      - surrealdb
+  surrealdb:
+    image: surrealdb/surrealdb:latest
+    container_name: surrealdb
+    restart: always
+    command: start memory --log trace --username root --password test --allow-all
+    ports:
+      - 8000:8000
+    networks:
+      - surrealdb
+  test-data-loader:
+    image: curlimages/curl:latest
+    container_name: test-data-loader
+    command: |
+      -v -X POST -u 'root:test' -H 'surreal-ns: test' -H 'surreal-db: test' -H 'Accept: application/json' --data-binary @/dev/shm/surreal-deal-store.surql http://surrealdb:8000/import
+    depends_on:
+      - surrealdb
+    restart: on-failure
+    volumes:
+      - ./tests/fixtures/surreal-deal-store.surql:/dev/shm/surreal-deal-store.surql
+    networks:
+      - surrealdb
+
+networks:
+  surrealdb:

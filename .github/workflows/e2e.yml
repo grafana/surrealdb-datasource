@@ -1,15 +1,14 @@
 name: E2E Tests
 
 on:
-  workflow_run:
-    workflows: [CI]
-    types:
-      - completed
+  push:
+    branches: [main, master]
+  pull_request:
+    branches: [main, master]
 
 jobs:
   e2e:
     runs-on: ubuntu-latest
-    if: ${{ github.event.workflow_run.conclusion == 'success' }}
     steps:
       - uses: actions/checkout@v4
 
@@ -18,43 +17,40 @@ jobs:
           node-version: '20'
           cache: 'yarn'
 
-      - name: Install dependencies
+      - uses: actions/setup-go@v5
+        with:
+          go-version: 'stable'
+
+      - name: Build backend
+        uses: magefile/mage-action@v3
+        with:
+          args: buildAll
+          version: latest
+
+      - name: Install frontend dependencies
         run: yarn install --frozen-lockfile
+
+      - name: Build frontend
+        run: yarn build
+        env:
+          NODE_OPTIONS: '--max_old_space_size=4096'
 
       - name: Install Playwright Browsers
         run: yarn playwright install --with-deps
 
-      - name: Download plugin-dist artifact
-        uses: actions/download-artifact@v4
+      # run the default compose file for the latest version of SurrealDB
+      - if: matrix.surreal-version == 'latest'
+        name: Install and run Docker Compose
+        uses: hoverkraft-tech/compose-action@v2.0.1
         with:
-          github-token: ${{ secrets.GH_PAT }}
-          merge-multiple: true
-          path: dist/
-          pattern: "*-dist"
-          repository: ${{ github.repository }}
-          run-id: ${{ github.event.workflow_run.id }}
+          compose-file: './compose.yaml'
 
-      # actions/download-artifact@v4 does not keep executable permissions
-      # intact, so we need to restore them manually.
-      - name: Restore executable permissions
-        run: |
-          TARGET_DIR="dist/"
-
-          if [ -d "$TARGET_DIR" ]; then
-            for file in ${TARGET_DIR}gpx_*; do
-              if [ -f "$file" ] && [ ! -x "$file" ]; then
-                echo "Setting executable permission for $file"
-                chmod +x "$file"
-              fi
-            done
-          else
-            echo "Directory $TARGET_DIR does not exist."
-          fi
-
-      - name: Install and run Docker Compose
-        uses: isbang/compose-action@v2.0.2
+      # run the v1 compose file for SurrealDB 1.5.4
+      - if: matrix.surreal-version == '1.5.4'
+        name: Install and run Docker Compose
+        uses: hoverkraft-tech/compose-action@v2.0.1
         with:
-          compose-file: './docker-compose.yaml'
+          compose-file: './compose-v1.yaml'
 
       - name: Wait for Grafana to start
         uses: nev7n/wait_for_response@v1
@@ -63,14 +59,17 @@ jobs:
           responseCode: 200
           timeout: 60000
           interval: 500
+
       - name: Run Playwright tests
         run: yarn playwright test
 
       - uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: playwright-report
+          name: playwright-report-${{ matrix.surreal-version }}
           path: playwright-report/
           retention-days: 30
-
+    strategy:
+      matrix:
+        surreal-version: ['latest', '1.5.4']
     timeout-minutes: 60
