@@ -39,7 +39,7 @@ services:
     image: curlimages/curl:latest
     container_name: test-data-loader
     command: |
-      -v -X POST -u 'root:test' -H 'NS: test' -H 'DB: test' -H 'Accept: application/json' --data-binary @/dev/shm/surreal-deal-v1.surql http://surrealdb:8000/import
+      -v -X POST -u 'root:test' -H 'surreal-ns: test' -H 'surreal-db: test' -H 'Accept: application/json' --data-binary @/dev/shm/surreal-deal-v1.surql http://surrealdb:8000/import
     depends_on:
       - surrealdb
     restart: on-failure
