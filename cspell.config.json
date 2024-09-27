@@ -23,12 +23,15 @@
   ],
   "words": [
     "adamyeats",
+    "curlimages",
     "datasource",
     "Datasource",
     "grafanalabs",
+    "healthcheck",
     "instancemgmt",
     "jackspeak",
     "sqlutil",
+    "surql",
     "surrealdb",
     "typecheck",
     "vals"
