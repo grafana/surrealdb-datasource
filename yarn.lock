@@ -649,10 +649,10 @@
     ua-parser-js "^1.0.32"
     web-vitals "^3.1.1"
 
-"@grafana/plugin-e2e@^1.8.1":
-  version "1.8.1"
-  resolved "https://registry.yarnpkg.com/@grafana/plugin-e2e/-/plugin-e2e-1.8.1.tgz#bce4aec11052f5a5f26a742de6d72d8c5c9c2cbb"
-  integrity sha512-F3KhQJIFiJLOrHOogi/zUU5K90THze0q5j7EiEctEuacn+UNpuLToKVsTDzb235MHme7bvmbcGZkvkiuWeT8VQ==
+"@grafana/plugin-e2e@^1.8.2":
+  version "1.8.2"
+  resolved "https://registry.yarnpkg.com/@grafana/plugin-e2e/-/plugin-e2e-1.8.2.tgz#d0f4bd0302bc1078929c8ca2f5f0fe5900389768"
+  integrity sha512-IMci55HqBbWkfkrA9zZ0/bIOo/ECvqY5yIOyajjKgJPSY3iOSdiRRzAsMRDIrQaXJflz3Q02i358GmNQ1lY7RA==
   dependencies:
     semver "^7.5.4"
     uuid "^10.0.0"
