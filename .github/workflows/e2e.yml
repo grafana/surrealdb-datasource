@@ -61,7 +61,7 @@ jobs:
           interval: 500
 
       - name: Run Playwright tests
-        run: yarn playwright test
+        run: sleep 60 && yarn playwright test
 
       - uses: actions/upload-artifact@v4
         if: always()

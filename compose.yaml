@@ -39,7 +39,7 @@ services:
       - surrealdb
   test-data-loader:
     image: curlimages/curl:latest
-    container_name: test-data-loader
+    container_name: surrealdb-data-loader
     command: |
       -v -X POST -u 'root:test' -H 'surreal-ns: test' -H 'surreal-db: test' -H 'Accept: application/json' --data-binary @/dev/shm/surreal-deal-store.surql http://surrealdb:8000/import
     depends_on:
