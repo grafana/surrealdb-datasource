@@ -29,7 +29,13 @@ services:
     networks:
       - surrealdb
   surrealdb:
-    image: surrealdb/surrealdb:latest
+    # The image is pinned to v2.0.2 to avoid a bug in the 2.0.3-4 releases.
+    # In the 2.0.3 release, an issue was introduced that caused the SurrealDB
+    # server to take an unacceptably long time to index data, causing issues 
+    # with the tests.
+    #
+    # https://github.com/surrealdb/vart/pull/54#issue-2577952172
+    image: surrealdb/surrealdb:v2.0.2
     container_name: surrealdb
     restart: always
     command: start memory --log trace --username root --password test --allow-all
