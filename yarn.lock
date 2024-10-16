@@ -675,7 +675,7 @@
     rxjs "7.8.1"
     tslib "2.6.3"
 
-"@grafana/schema@11.2.2":
+"@grafana/schema@11.2.2", "@grafana/schema@^11.2.2":
   version "11.2.2"
   resolved "https://registry.yarnpkg.com/@grafana/schema/-/schema-11.2.2.tgz#5f5244c8e96466cdea13a59e01d00ac38c078de3"
   integrity sha512-x5+FY3tx1DlxwQ9OsS5cgr4GFh7/FjV+sub1dQJQvV/ujkRmlO5Sp/cEVMZd83BZ6O+5bJfSOeE1WKw+Rha/OQ==
@@ -692,7 +692,7 @@
   resolved "https://registry.yarnpkg.com/@grafana/tsconfig/-/tsconfig-2.0.0.tgz#277aba907ddbe0301dc37248923e6bd2b68f5151"
   integrity sha512-cxC3Htv/GidI5FeVGAzj/lYZTMMz/Cfsc8VOQFO3Ichjx3hUjyjeoBUIpVSVMnIjKUdA5ycdxtMYPHIuIrk8+A==
 
-"@grafana/ui@11.2.2", "@grafana/ui@^11.2.0":
+"@grafana/ui@11.2.2", "@grafana/ui@^11.2.2":
   version "11.2.2"
   resolved "https://registry.yarnpkg.com/@grafana/ui/-/ui-11.2.2.tgz#872b214e92dfbb901400fed8d307aedd0aa3d161"
   integrity sha512-I6vQIFVQZNL0dkHTwmkn+2cVUQvGNx4kqIadSzbtwj4b/ZcOWnZU0pOfOFADAbxfPUVFpNxAg87pOww9taWcnQ==
@@ -7687,6 +7687,11 @@ typed-array-length@^1.0.4:
     for-each "^0.3.3"
     is-typed-array "^1.1.9"
 
+typed-assert@^1.0.8:
+  version "1.0.9"
+  resolved "https://registry.yarnpkg.com/typed-assert/-/typed-assert-1.0.9.tgz#8af9d4f93432c4970ec717e3006f33f135b06213"
+  integrity sha512-KNNZtayBCtmnNmbo5mG47p1XsCyrx6iVqomjcZnec/1Y5GGARaxPs6r49RnSPeUP3YjNYiU9sQHAtY4BBvnZwg==
+
 typescript@5.2.2:
   version "5.2.2"
   resolved "https://registry.npmjs.org/typescript/-/typescript-5.2.2.tgz"
@@ -7910,6 +7915,13 @@ webpack-sources@^3.2.3:
   version "3.2.3"
   resolved "https://registry.npmjs.org/webpack-sources/-/webpack-sources-3.2.3.tgz"
   integrity sha512-/DyMEOrDgLKKIG0fmvtz+4dUX/3Ghozwgm6iPp8KRhvn+eQf9+Q7GWxVNMk3+uCPWfdXYC4ExGBckIXdFEfH1w==
+
+webpack-subresource-integrity@^5.1.0:
+  version "5.1.0"
+  resolved "https://registry.yarnpkg.com/webpack-subresource-integrity/-/webpack-subresource-integrity-5.1.0.tgz#8b7606b033c6ccac14e684267cb7fb1f5c2a132a"
+  integrity sha512-sacXoX+xd8r4WKsy9MvH/q/vBtEHr86cpImXwyg74pFIpERKt6FmB8cXpeuh0ZLgclOlHI4Wcll7+R5L02xk9Q==
+  dependencies:
+    typed-assert "^1.0.8"
 
 webpack-virtual-modules@^0.6.2:
   version "0.6.2"
