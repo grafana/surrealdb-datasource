@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.2.2
+
+Released 16/10/2024.
+
+- Dependency updates.
+- Updates to error source capture.
+
 ## 0.2.1
 
 Released 09/09/2024.
