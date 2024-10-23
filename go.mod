@@ -5,7 +5,7 @@ go 1.22
 toolchain go1.22.6
 
 require (
-	github.com/grafana/grafana-plugin-sdk-go v0.256.0
+	github.com/grafana/grafana-plugin-sdk-go v0.257.0
 	github.com/surrealdb/surrealdb.go v0.2.1
 )
 
