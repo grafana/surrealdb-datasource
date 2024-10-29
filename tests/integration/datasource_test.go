@@ -51,8 +51,20 @@ var cases = []struct {
 		name:  "SELECT with LIMIT",
 	},
 	{
-		input: "SELECT product.name FROM review;",
+		input: "SELECT out.name FROM review;",
 		name:  "SELECT with Record links",
+	},
+	{
+		input: "SELECT * FROM person WHERE time.created_at = d'2023-11-27T22:30:23Z'",
+		name:  "SELECT with datetime equality",
+	},
+	{
+		input: "SELECT * FROM person WHERE time.created_at > d'2022-11-27T22:30:23Z'",
+		name:  "SELECT with datetime greater than",
+	},
+	{
+		input: "SELECT * FROM person WHERE time.created_at < d'2023-11-27T22:30:23Z'",
+		name:  "SELECT with datetime less than",
 	},
 }
 
