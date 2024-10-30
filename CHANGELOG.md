@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.2.3
+
+Released 31/10/2024.
+
+- Add compatibility warning for SurrealDB v2.0. 
+- Dependency updates.
+
 ## 0.2.2
 
 Released 16/10/2024.
