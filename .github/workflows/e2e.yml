@@ -53,12 +53,8 @@ jobs:
           compose-file: './compose-v1.yaml'
 
       - name: Wait for Grafana to start
-        uses: nev7n/wait_for_response@v1
-        with:
-          url: 'http://localhost:3000/'
-          responseCode: 200
-          timeout: 60000
-          interval: 500
+        run: |
+          timeout 180 bash -c 'until curl -s -o /dev/null -w "%{http_code}" http://localhost:3000 | grep -q "200"; do sleep 1; done && echo "Grafana is up!"'
 
       - name: Run Playwright tests
         run: yarn playwright test

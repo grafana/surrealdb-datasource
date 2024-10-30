@@ -1,0 +1,59 @@
+name: Grafana Bench
+on:
+  push:
+    # Only run on push to the main branch
+    branches: [main, master]
+
+jobs:
+  test:
+    timeout-minutes: 60
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'yarn'
+
+      - uses: actions/setup-go@v5
+        with:
+          go-version: 'stable'
+
+      - name: Build backend
+        uses: magefile/mage-action@v3
+        with:
+          args: buildAll
+          version: latest
+
+      - name: Install frontend dependencies
+        run: yarn install --frozen-lockfile
+
+      - name: Build frontend
+        run: yarn build
+        env:
+          NODE_OPTIONS: '--max_old_space_size=4096'
+
+      - name: Install and run Docker Compose
+        uses: hoverkraft-tech/compose-action@v2.0.2
+        with:
+          # TODO: Update when v2.0 compatility is added
+          compose-file: './compose-v1.yaml'
+
+      - name: Wait for Grafana to start
+        run: |
+          timeout 180 bash -c 'until curl -s -o /dev/null -w "%{http_code}" http://localhost:3000 | grep -q "200"; do sleep 1; done && echo "Grafana is up!"'
+
+      - name: Run Grafana Bench tests
+        run: |
+          docker run --rm \
+            --network=host \
+            --volume="./:/home/bench/tests/" \
+            us-docker.pkg.dev/grafanalabs-global/docker-grafana-bench-prod/grafana-bench:v0.3.0 test \
+            --grafana-url "http://localhost:3000" \
+            --log-level DEBUG \
+            --pw-execute-cmd "yarn e2e" \
+            --pw-prepare-cmd "yarn install --frozen-lockfile; yarn playwright install" \
+            --test-env-vars "CI=true" \
+            --test-runner "playwright" \
+            --test-suite-base "/home/bench/tests/"
