@@ -18,7 +18,7 @@ export default defineConfig<PluginOptions>({
   reporter: 'html',
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
-    baseURL: `http://localhost:${process.env.PORT || 3000}`,
+    baseURL: process.env.GRAFANA_URL || `http://localhost:${process.env.PORT || 3000}`,
     screenshot: 'only-on-failure',
     video: 'on'
   },

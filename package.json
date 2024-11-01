@@ -21,7 +21,7 @@
   "devDependencies": {
     "@babel/core": "^7.26.0",
     "@grafana/eslint-config": "^7.0.0",
-    "@grafana/plugin-e2e": "^1.8.3",
+    "@grafana/plugin-e2e": "^1.11.0",
     "@grafana/tsconfig": "^2.0.0",
     "@playwright/test": "^1.48.2",
     "@swc/core": "^1.7.40",
@@ -58,18 +58,19 @@
     "imports-loader": "^5.0.0",
     "terser-webpack-plugin": "^5.3.10",
     "webpack-virtual-modules": "^0.6.2",
-    "webpack-subresource-integrity": "^5.1.0"
+    "webpack-subresource-integrity": "^5.1.0",
+    "semver": "^7.6.3"
   },
   "engines": {
     "node": ">=20"
   },
   "dependencies": {
     "@emotion/css": "^11.13.4",
-    "@grafana/data": "^11.2.2",
+    "@grafana/data": "^11.3.0",
     "@grafana/experimental": "^2.1.2",
-    "@grafana/runtime": "^11.2.2",
-    "@grafana/schema": "^11.2.2",
-    "@grafana/ui": "^11.2.2",
+    "@grafana/runtime": "^11.3.0",
+    "@grafana/schema": "^11.3.0",
+    "@grafana/ui": "^11.3.0",
     "react-dom": "18.3.1",
     "react": "18.3.1",
     "tslib": "2.8.0"
