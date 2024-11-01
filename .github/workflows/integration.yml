@@ -54,5 +54,9 @@ jobs:
         run: sleep 30 && go test -v ./tests/integration/**
     strategy:
       matrix:
-        surreal-version: ['latest', '1.5.4']
+        surreal-version: [
+            # TODO: re-enable this step when the 2.0 is supported
+            # 'latest',
+            '1.5.4',
+          ]
     timeout-minutes: 60
