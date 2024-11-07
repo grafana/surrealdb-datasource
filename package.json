@@ -20,8 +20,8 @@
   "license": "Apache-2.0",
   "devDependencies": {
     "@babel/core": "^7.26.0",
-    "@grafana/eslint-config": "^7.0.0",
-    "@grafana/plugin-e2e": "^1.11.0",
+    "@grafana/eslint-config": "^8.0.0",
+    "@grafana/plugin-e2e": "^1.11.3",
     "@grafana/tsconfig": "^2.0.0",
     "@playwright/test": "^1.48.2",
     "@swc/core": "^1.9.1",
