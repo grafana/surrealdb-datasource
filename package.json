@@ -25,7 +25,7 @@
     "@grafana/tsconfig": "^2.0.0",
     "@playwright/test": "^1.49.0",
     "@swc/core": "^1.9.3",
-    "@swc/helpers": "^0.5.13",
+    "@swc/helpers": "^0.5.15",
     "@swc/jest": "^0.2.37",
     "@testing-library/jest-dom": "6.4.8",
     "@testing-library/react": "^16.0.1",
