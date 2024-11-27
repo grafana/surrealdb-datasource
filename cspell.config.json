@@ -23,9 +23,11 @@
   ],
   "words": [
     "adamyeats",
+    "commitlint",
     "curlimages",
     "datasource",
     "Datasource",
+    "errorsource",
     "grafanalabs",
     "healthcheck",
     "instancemgmt",
@@ -34,7 +36,6 @@
     "surql",
     "surrealdb",
     "typecheck",
-    "vals", 
-    "errorsource"
+    "vals"
   ]
 }
