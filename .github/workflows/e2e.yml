@@ -41,14 +41,14 @@ jobs:
       # run the default compose file for the latest version of SurrealDB
       - if: matrix.surreal-version == 'latest'
         name: Install and run Docker Compose
-        uses: hoverkraft-tech/compose-action@v2.0.2
+        uses: hoverkraft-tech/compose-action@v2.1.0
         with:
           compose-file: './compose.yaml'
 
       # run the v1 compose file for SurrealDB 1.5.4
       - if: matrix.surreal-version == '1.5.4'
         name: Install and run Docker Compose
-        uses: hoverkraft-tech/compose-action@v2.0.2
+        uses: hoverkraft-tech/compose-action@v2.1.0
         with:
           compose-file: './compose-v1.yaml'
 
