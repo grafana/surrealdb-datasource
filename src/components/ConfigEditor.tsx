@@ -1,6 +1,6 @@
 import React, { ChangeEvent } from 'react';
 import { Alert, Divider, Field, Input, SecretInput, Stack, TextLink } from '@grafana/ui';
-import { DataSourceDescription, ConfigSection } from '@grafana/experimental';
+import { DataSourceDescription, ConfigSection } from '@grafana/plugin-ui';
 import { DataSourcePluginOptionsEditorProps } from '@grafana/data';
 import type { SurrealDataSourceOptions, SurrealSecureJsonData } from '../types';
 
@@ -88,7 +88,7 @@ export function ConfigEditor({ onOptionsChange, options }: Props) {
       />
       <Divider />
       <Alert title="SurrealDB v2.0 compatibility" severity="warning">
-        <Stack direction='column'>
+        <Stack direction="column">
           <div>
             The Grafana SurrealDB datasource currently does not support SurrealDB v2.0. Please ensure you are using a
             compatible version of SurrealDB (v1.x) for full functionality. Follow the GitHub issue{' '}
@@ -101,7 +101,7 @@ export function ConfigEditor({ onOptionsChange, options }: Props) {
       </Alert>
 
       <Alert title="This datasource is currently experimental" severity="warning">
-        <Stack direction='column'>
+        <Stack direction="column">
           <div>
             This means that you might encounter unexpected behavior, bugs, or limitations while using this datasource.
             We strongly advise exercising caution and understanding the potential risks associated with using
