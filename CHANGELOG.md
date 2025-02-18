@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.2.5
+
+- Dependency updates.
+
 ## 0.2.4
 
 Released 27/12/2024.
