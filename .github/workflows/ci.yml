@@ -15,6 +15,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
 
       - name: Setup Go environment
         uses: actions/setup-go@v5
@@ -22,13 +24,13 @@ jobs:
           go-version: 'stable'
 
       - name: Build backend
-        uses: magefile/mage-action@v3
+        uses: magefile/mage-action@6f50bbb8ea47d56e62dee92392788acbc8192d0b
         with:
           args: buildAll
           version: latest
 
       - name: Test backend
-        uses: magefile/mage-action@v3
+        uses: magefile/mage-action@6f50bbb8ea47d56e62dee92392788acbc8192d0b
         with:
           args: coverage
           version: latest
@@ -37,6 +39,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
 
       - name: Setup Node.js environment
         uses: actions/setup-node@v4
@@ -58,5 +62,5 @@ jobs:
 
       - name: Build frontend
         run: yarn build
-          
+
     timeout-minutes: 60
