@@ -12,6 +12,9 @@ jobs:
       GRAFANA_API_KEY: ${{ secrets.GRAFANA_API_KEY }} # Requires a Grafana API key from Grafana.com.
     steps:
       - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+
       - name: Setup Node.js environment
         uses: actions/setup-node@v4
         with:
@@ -39,14 +42,14 @@ jobs:
 
       - name: Test backend
         if: steps.check-for-backend.outputs.has-backend == 'true'
-        uses: magefile/mage-action@v3
+        uses: magefile/mage-action@6f50bbb8ea47d56e62dee92392788acbc8192d0b
         with:
           version: latest
           args: coverage
 
       - name: Build backend
         if: steps.check-for-backend.outputs.has-backend == 'true'
-        uses: magefile/mage-action@v3
+        uses: magefile/mage-action@6f50bbb8ea47d56e62dee92392788acbc8192d0b
         with:
           version: latest
           args: buildAll
@@ -87,45 +90,61 @@ jobs:
           echo "path=release_notes.md" >> $GITHUB_OUTPUT
 
       - name: Check package version
-        run: if [ "v${{ steps.metadata.outputs.plugin-version }}" != "${{ steps.metadata.outputs.github-tag }}" ]; then printf "\033[0;31mPlugin version doesn't match tag name\033[0m\n"; exit 1; fi
+        env:
+          PLUGIN_VERSION: ${{ steps.metadata.outputs.plugin-version }}
+          GH_TAG: ${{ steps.metadata.outputs.github-tag }}
+        run: if [ "v${PLUGIN_VERSION}" != "${GH_TAG}" ]; then printf "\033[0;31mPlugin version doesn't match tag name\033[0m\n"; exit 1; fi
 
       - name: Package plugin
         id: package-plugin
+        env:
+          PLUGIN_ID: ${{ steps.metadata.outputs.plugin-id }}
+          ARCHIVE: ${{ steps.metadata.outputs.archive }}
+          ARCHIVE_CHECKSUM: ${{ steps.metadata.outputs.archive-checksum }}
         run: |
-          mv dist ${{ steps.metadata.outputs.plugin-id }}
-          zip ${{ steps.metadata.outputs.archive }} ${{ steps.metadata.outputs.plugin-id }} -r
-          md5sum ${{ steps.metadata.outputs.archive }} > ${{ steps.metadata.outputs.archive-checksum }}
-          echo "checksum=$(cat ./${{ steps.metadata.outputs.archive-checksum }} | cut -d' ' -f1)" >> $GITHUB_OUTPUT
-
+          mv dist ${PLUGIN_ID}
+          zip ${ARCHIVE} ${PLUGIN_ID} -r
+          md5sum ${ARCHIVE} > ${ARCHIVE_CHECKSUM}
+          echo "::set-output name=checksum::$(cat ./${ARCHIVE_CHECKSUM} | cut -d' ' -f1)"
       - name: Validate plugin
+        env:
+          ARCHIVE: ${{ steps.metadata.outputs.archive }}
         run: |
           git clone https://github.com/grafana/plugin-validator
           pushd ./plugin-validator/pkg/cmd/plugincheck2
           go install
           popd
-          plugincheck2 -config ./plugin-validator/config/default.yaml ${{ steps.metadata.outputs.archive }}
+          plugincheck2 -config ./plugin-validator/config/default.yaml ${ARCHIVE}
 
-      - name: Create Github release
-        uses: softprops/action-gh-release@v2
+      - name: Create release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
+          tag_name: ${{ github.ref }}
+          release_name: Release ${{ github.ref }}
+          body_path: ${{ steps.changelog.outputs.path }}
           draft: true
-          generate_release_notes: true
-          files: |
-            ./${{ steps.metadata.outputs.archive }}
-            ./${{ steps.metadata.outputs.archive-checksum }}
-          body: |
-            **This Github draft release has been created for your plugin.**
 
-            _Note: if this is the first release for your plugin please consult the [distributing-your-plugin section](https://github.com/${{github.repository}}/blob/main/README.md#distributing-your-plugin) of the README_
+      - name: Add plugin to release
+        id: upload-plugin-asset
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./${{ steps.metadata.outputs.archive }}
+          asset_name: ${{ steps.metadata.outputs.archive }}
+          asset_content_type: application/zip
 
-            If you would like to submit this release to Grafana please consider the following steps:
-
-            - Check the Validate plugin step in the [release workflow](https://github.com/${{github.repository}}/commit/${{github.sha}}/checks/${{github.run_id}}) for any warnings that need attention
-            - Navigate to https://grafana.com/auth/sign-in/ to sign into your account
-            - Once logged in click **My Plugins** in the admin navigation
-            - Click the **Submit Plugin** button
-            - Fill in the Plugin Submission form:
-              - Paste this [.zip asset link](https://github.com/${{ github.repository }}/releases/download/v${{ steps.metadata.outputs.plugin-version }}/${{ steps.metadata.outputs.archive }}) in the Plugin URL field
-              - Paste this [.zip.md5 link](https://github.com/${{ github.repository }}/releases/download/v${{ steps.metadata.outputs.plugin-version }}/${{ steps.metadata.outputs.archive-checksum }}) in the MD5 field
-
-            Once done please remove these instructions and publish this release.
+      - name: Add checksum to release
+        id: upload-checksum-asset
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./${{ steps.metadata.outputs.archive-checksum }}
+          asset_name: ${{ steps.metadata.outputs.archive-checksum }}
+          asset_content_type: text/plain
