@@ -34,7 +34,8 @@
     "surql",
     "surrealdb",
     "typecheck",
-    "vals", 
-    "errorsource"
+    "vals",
+    "errorsource",
+    "zizmor"
   ]
 }

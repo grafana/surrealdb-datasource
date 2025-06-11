@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.2.6
+
+- Dependency updates.
+- Incorporate Zizmor scan fixes, PR #651.
+
 ## 0.2.5
 
 - Dependency updates.
