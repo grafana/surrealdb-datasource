@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.2.7
+
+- **Chore** no-change version bump to fix release pipeline
+
 ## 0.2.6
 
 - Dependency updates.
