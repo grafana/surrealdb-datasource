@@ -31,7 +31,7 @@
     "@testing-library/jest-dom": "6.6.3",
     "@testing-library/react": "^16.2.0",
     "@types/jest": "^29.5.14",
-    "@types/lodash": "^4.17.15",
+    "@types/lodash": "^4.17.19",
     "@types/node": "^22.15.3",
     "@types/react-router-dom": "^5.3.3",
     "@types/testing-library__jest-dom": "5.14.9",
