@@ -20,8 +20,8 @@
   "license": "Apache-2.0",
   "devDependencies": {
     "@babel/core": "^7.28.0",
-    "@grafana/eslint-config": "8.0.0",
-    "@grafana/plugin-e2e": "^1.19.9",
+    "@grafana/eslint-config": "8.1.0",
+    "@grafana/plugin-e2e": "^2.1.7",
     "@grafana/tsconfig": "^2.0.0",
     "@playwright/test": "^1.54.1",
     "@stylistic/eslint-plugin-ts": "^3.1.0",
@@ -74,11 +74,11 @@
   },
   "dependencies": {
     "@emotion/css": "^11.13.5",
-    "@grafana/data": "^11.6.1",
-    "@grafana/plugin-ui": "^0.10.5",
-    "@grafana/runtime": "^11.6.1",
-    "@grafana/schema": "^11.3.0",
-    "@grafana/ui": "^11.3.0",
+    "@grafana/data": "^12.0.2",
+    "@grafana/plugin-ui": "^0.10.7",
+    "@grafana/runtime": "^12.0.2",
+    "@grafana/schema": "^12.0.2",
+    "@grafana/ui": "^12.0.2",
     "react": "18.3.1",
     "react-dom": "18.3.1",
     "tslib": "2.8.1"
