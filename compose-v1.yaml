@@ -27,7 +27,7 @@ services:
     networks:
       - surrealdb
   surrealdb:
-    image: surrealdb/surrealdb:v1.5.4
+    image: surrealdb/surrealdb:v1.5.6@sha256:f4e80018e035fc8f9f4354e5bd9521b22aa8484c336654858cc01ce630bb8f36
     container_name: surrealdb
     restart: always
     command: start --username root --password test --allow-all
