@@ -2,6 +2,9 @@
 
 # SurrealDB Datasource
 
+>[!IMPORTANT]
+> **Deprecation Notice**: This plugin is deprecated and will only receive critical security updates. Support will end on **June 1, 2026**.
+
 The SurrealDB datasource plugin enables you to query and visualize SurrealDB data directly within Grafana, offering seamless integration and exploration of SurrealDB datasets.
 
 ## ⚠️ This plugin is currently experimental
