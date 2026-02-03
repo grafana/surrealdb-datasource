@@ -37,7 +37,7 @@ jobs:
           NODE_OPTIONS: '--max_old_space_size=4096'
 
       - name: Install and run Docker Compose
-        uses: hoverkraft-tech/compose-action@b63643de227a1eed273c58de31d4bc5c9d99b4da
+        uses: hoverkraft-tech/compose-action@bb5664383c049fdd7cda33425c2364acdccd8c02
         with:
           # TODO: Update when v2.0 compatility is added
           compose-file: './compose-v1.yaml'
