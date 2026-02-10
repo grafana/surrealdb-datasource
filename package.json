@@ -84,7 +84,7 @@
     "tslib": "2.8.1"
   },
   "resolutions": {
-    "jackspeak": "2.1.1"
+    "jackspeak": "4.2.3"
   },
   "packageManager": "yarn@1.22.22",
   "volta": {
