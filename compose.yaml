@@ -35,7 +35,7 @@ services:
     # with the tests.
     #
     # https://github.com/surrealdb/vart/pull/54#issue-2577952172
-    image: surrealdb/surrealdb:v2.0.2
+    image: surrealdb/surrealdb:v2.0.2@sha256:a614fd8fc1edf8fee34c44cde8d740d193946a8d4064231aa29a2fbd95dd12a3
     container_name: surrealdb
     restart: always
     command: start memory --log trace --username root --password test --allow-all
@@ -44,7 +44,7 @@ services:
     networks:
       - surrealdb
   test-data-loader:
-    image: curlimages/curl:latest
+    image: curlimages/curl:latest@sha256:d94d07ba9e7d6de898b6d96c1a072f6f8266c687af78a74f380087a0addf5d17
     container_name: test-data-loader
     command: |
       -v -X POST -u 'root:test' -H 'surreal-ns: test' -H 'surreal-db: test' -H 'Accept: application/json' --data-binary @/dev/shm/surreal-deal-store.surql http://surrealdb:8000/import
