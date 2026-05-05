@@ -9,7 +9,6 @@ import (
 	"github.com/grafana-labs/surrealdb-datasource/pkg/client"
 	"github.com/grafana/grafana-plugin-sdk-go/backend"
 	"github.com/grafana/grafana-plugin-sdk-go/backend/instancemgmt"
-	"github.com/grafana/grafana-plugin-sdk-go/experimental/errorsource"
 	"github.com/grafana/grafana-plugin-sdk-go/experimental/slo"
 	"github.com/surrealdb/surrealdb.go"
 )
@@ -47,14 +46,14 @@ func NewDatasource(ctx context.Context, dsiConfig backend.DataSourceInstanceSett
 
 	db, err := surrealdb.New(config.Endpoint)
 	if err != nil {
-		return nil, errorsource.DownstreamError(err, false)
+		return nil, backend.DownstreamError(err)
 	}
 
 	client := client.Use(db)
 
 	_, err = client.Connect(&config)
 	if err != nil {
-		return nil, errorsource.DownstreamError(fmt.Errorf("unable to connect to database: %w", err), false)
+		return nil, backend.DownstreamError(fmt.Errorf("unable to connect to database: %w", err))
 	}
 
 	return slo.NewMetricsWrapper(NewDatasourceInstance(client, &config), dsiConfig), nil
