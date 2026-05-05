@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.2.10
+
+- Dependency updates.
+
 ## 0.2.9
 
 - Dependency updates.
